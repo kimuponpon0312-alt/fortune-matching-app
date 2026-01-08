@@ -364,6 +364,7 @@ body {
               linear-gradient(90deg, transparent, #d4af37, transparent, #d4af37, transparent) border-box;
   background-size: 200% 200%;
   animation: glowingBorder 3s linear infinite;
+  pointer-events: auto; /* クリック可能にする */
 }
 
 .glow-border:focus-within {
@@ -374,6 +375,7 @@ body {
 /* フォーカス時の光の粒 */
 .particle-burst {
   position: relative;
+  pointer-events: auto; /* クリック可能にする */
 }
 
 .particle-burst::before {
@@ -384,6 +386,8 @@ body {
   background: radial-gradient(circle, rgba(212, 175, 55, 0.6) 0%, transparent 70%);
   opacity: 0;
   transition: opacity 0.3s;
+  pointer-events: none; /* クリックを透過 */
+  z-index: -1; /* 入力欄の背後に配置 */
 }
 
 .particle-burst:focus-within::before {

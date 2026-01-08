@@ -334,9 +334,9 @@ export default function Home() {
         ))}
       </div>
 
-      <div className="container mx-auto px-4 py-12 max-w-4xl relative z-10">
+      <div className="container mx-auto px-4 py-12 max-w-4xl relative z-20">
         {/* ヘッダー */}
-        <header className="text-center mb-12 animate-fade-in-up">
+        <header className="text-center mb-12 animate-fade-in-up relative z-10">
           <div className="inline-block mb-4 animate-fade-in-up-delay-1">
             <span className="text-6xl">🔮</span>
           </div>
@@ -356,7 +356,7 @@ export default function Home() {
         </header>
 
         {/* メインコンテンツ */}
-        <div className="glass-morphism rounded-3xl shadow-gold-lg p-8 md:p-12 border border-gold/30 animate-fade-in-up-delay-2">
+        <div className="glass-morphism rounded-3xl shadow-gold-lg p-8 md:p-12 border border-gold/30 animate-fade-in-up-delay-2 relative z-20">
           {isAnalyzing ? (
             /* 魔法陣/星座の輪のローディングアニメーション */
             <div className="text-center py-20 relative">
@@ -434,7 +434,7 @@ export default function Home() {
             </div>
           ) : !userTenkan ? (
             /* 入力フォーム */
-            <form onSubmit={handleSubmit} className="space-y-8">
+            <form onSubmit={handleSubmit} className="space-y-8 relative z-30">
               <div className="animate-fade-in-up">
                 <label className="block text-xl font-semibold mb-6 text-gold text-center">
                   <span className="inline-block mr-2">📅</span>
@@ -445,7 +445,7 @@ export default function Home() {
                     <label className="block text-sm font-medium text-gray-300">
                       年
                     </label>
-                    <div className="glow-border particle-burst rounded-xl">
+                    <div className="glow-border particle-burst rounded-xl relative z-10">
                       <input
                         type="number"
                         value={birthYear}
@@ -453,7 +453,7 @@ export default function Home() {
                         placeholder="1980"
                         min="1900"
                         max="2100"
-                        className="w-full px-5 py-4 bg-darkNavy/80 rounded-xl focus:outline-none text-white text-center text-lg placeholder-gray-600 transition-all duration-300"
+                        className="w-full px-5 py-4 bg-darkNavy/90 rounded-xl focus:outline-none text-white text-center text-lg placeholder-gray-500 transition-all duration-300 border-2 border-gold/40 focus:border-gold focus:bg-darkNavy"
                         required
                         disabled={isLoading}
                       />
@@ -463,7 +463,7 @@ export default function Home() {
                     <label className="block text-sm font-medium text-gray-300">
                       月
                     </label>
-                    <div className="glow-border particle-burst rounded-xl">
+                    <div className="glow-border particle-burst rounded-xl relative z-10">
                       <input
                         type="number"
                         value={birthMonth}
@@ -471,7 +471,7 @@ export default function Home() {
                         placeholder="5"
                         min="1"
                         max="12"
-                        className="w-full px-5 py-4 bg-darkNavy/80 rounded-xl focus:outline-none text-white text-center text-lg placeholder-gray-600 transition-all duration-300"
+                        className="w-full px-5 py-4 bg-darkNavy/90 rounded-xl focus:outline-none text-white text-center text-lg placeholder-gray-500 transition-all duration-300 border-2 border-gold/40 focus:border-gold focus:bg-darkNavy"
                         required
                         disabled={isLoading}
                       />
@@ -481,7 +481,7 @@ export default function Home() {
                     <label className="block text-sm font-medium text-gray-300">
                       日
                     </label>
-                    <div className="glow-border particle-burst rounded-xl">
+                    <div className="glow-border particle-burst rounded-xl relative z-10">
                       <input
                         type="number"
                         value={birthDay}
@@ -489,7 +489,7 @@ export default function Home() {
                         placeholder="15"
                         min="1"
                         max="31"
-                        className="w-full px-5 py-4 bg-darkNavy/80 rounded-xl focus:outline-none text-white text-center text-lg placeholder-gray-600 transition-all duration-300"
+                        className="w-full px-5 py-4 bg-darkNavy/90 rounded-xl focus:outline-none text-white text-center text-lg placeholder-gray-500 transition-all duration-300 border-2 border-gold/40 focus:border-gold focus:bg-darkNavy"
                         required
                         disabled={isLoading}
                       />
@@ -499,7 +499,7 @@ export default function Home() {
               </div>
 
               {/* 性別選択 */}
-              <div className="space-y-4 animate-fade-in-up-delay-1">
+              <div className="space-y-4 animate-fade-in-up-delay-1 relative z-10">
                 <label className="block text-lg font-semibold text-gold text-center">
                   <span className="inline-block mr-2">👤</span>
                   あなたの性別
@@ -517,7 +517,7 @@ export default function Home() {
               </div>
 
               {/* 探している相手の性別 */}
-              <div className="space-y-4 animate-fade-in-up-delay-2">
+              <div className="space-y-4 animate-fade-in-up-delay-2 relative z-10">
                 <label className="block text-lg font-semibold text-gold text-center">
                   <span className="inline-block mr-2">💕</span>
                   探している相手
@@ -535,7 +535,7 @@ export default function Home() {
               </div>
 
               {error && (
-                <div className="bg-red-900/40 border-2 border-red-500/50 rounded-xl p-4 text-red-200 animate-fade-in">
+                <div className="bg-red-900/40 border-2 border-red-500/50 rounded-xl p-4 text-red-200 animate-fade-in relative z-10">
                   <div className="flex items-center">
                     <span className="mr-2">⚠️</span>
                     <span>{error}</span>
@@ -544,7 +544,7 @@ export default function Home() {
               )}
 
               {/* プライバシー保護の一文 */}
-              <div className="flex items-center justify-center space-x-2 text-sm text-gray-400 animate-fade-in-up-delay-2">
+              <div className="flex items-center justify-center space-x-2 text-sm text-gray-400 animate-fade-in-up-delay-2 relative z-10">
                 <span>🔒</span>
                 <span>プライバシー保護：お客様のデータは最新の技術で暗号化され、厳重に守られます</span>
               </div>
@@ -552,7 +552,7 @@ export default function Home() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-gradient-gold text-darkNavy font-bold py-5 px-8 rounded-xl hover:shadow-gold transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-lg relative overflow-hidden animate-fade-in-up-delay-3 ripple-effect"
+                className="w-full bg-gradient-gold text-darkNavy font-bold py-5 px-8 rounded-xl hover:shadow-gold transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-lg relative overflow-hidden animate-fade-in-up-delay-3 ripple-effect z-10"
               >
                 {isLoading ? (
                   <span className="flex items-center justify-center">
