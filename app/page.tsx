@@ -738,7 +738,7 @@ export default function Home() {
                               'Content-Type': 'application/json',
                             },
                             body: JSON.stringify({
-                              priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_MONTHLY || 'price_xxxxx', // 月額プランの価格ID
+                              priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_MONTHLY ?? 'price_xxxxx', // 月額プランの価格ID
                               planType: 'subscription',
                             }),
                           });
@@ -776,7 +776,7 @@ export default function Home() {
                               'Content-Type': 'application/json',
                             },
                             body: JSON.stringify({
-                              priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_ONE_TIME || 'price_xxxxx', // 一回限りの価格ID
+                              priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_ONE_TIME ?? 'price_xxxxx', // 一回限りの価格ID
                               planType: 'payment',
                             }),
                           });

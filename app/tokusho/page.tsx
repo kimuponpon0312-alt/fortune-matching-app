@@ -8,9 +8,11 @@ export default function TokushoPage() {
   useEffect(() => {
     // Stripe審査用フラグ：URLパラメータまたは環境変数で制御
     // 本番環境では環境変数を使用することを推奨
-    const params = new URLSearchParams(window.location.search);
-    const reviewFlag = params.get('review') === 'true' || process.env.NEXT_PUBLIC_SHOW_REVIEW_INFO === 'true';
-    setShowReviewInfo(reviewFlag);
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const reviewFlag = params.get('review') === 'true' || process.env.NEXT_PUBLIC_SHOW_REVIEW_INFO === 'true';
+      setShowReviewInfo(reviewFlag);
+    }
   }, []);
 
   // 一般公開用の情報（プライバシー保護）
