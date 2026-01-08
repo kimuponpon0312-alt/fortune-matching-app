@@ -117,7 +117,7 @@ export default function TokushoPage() {
             </div>
           </div>
 
-          {/*https://www.google.com/url?sa=E&source=gmail&q=https://fortune-matching-app.vercel.app/tokusho&authuser=1*/}
+          {/* フッターリンク */}
           <div className="mt-8 text-center">
             <a
               href="/"
