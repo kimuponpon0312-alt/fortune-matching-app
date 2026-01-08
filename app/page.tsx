@@ -814,20 +814,23 @@ export default function Home() {
         )}
 
         {/* フッター */}
-        <footer className="text-center mt-16 text-gray-400 text-sm animate-fade-in space-y-3">
+        <footer className="text-center mt-16 text-gray-400 text-sm animate-fade-in space-y-4">
           <div className="flex items-center justify-center space-x-2">
             <span className="text-gold/60">監修：</span>
             <span className="text-gold font-semibold">東洋占星術研究機構</span>
           </div>
-          <p>© 2024 Soleil et Lune - 四柱推命による相性診断</p>
-          <div className="flex items-center justify-center space-x-4 text-xs">
+          
+          <div className="pt-4 border-t border-gold/20">
             <a
               href="/tokusho"
-              className="text-gold hover:text-lightGold transition-colors underline"
+              className="inline-block text-gold hover:text-lightGold transition-colors underline font-semibold text-base"
             >
               特定商取引法に基づく表記
             </a>
           </div>
+          
+          <p>© 2024 Soleil et Lune - 四柱推命による相性診断</p>
+          
           <p className="text-xs text-gray-500">
             このアプリはプロトタイプです。正確な四柱推命の計算には旧暦への変換が必要です。
           </p>
