@@ -249,15 +249,15 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-fortune relative overflow-hidden">
-      {/* Parallax Starfield + オーロラ背景 */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Parallax Starfield + オーロラ背景 */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
         {/* 既存の装飾的な背景要素 */}
-        <div className="absolute top-20 left-10 w-72 h-72 bg-gold/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-gold/5 rounded-full blur-3xl"></div>
+        <div className="absolute top-20 left-10 w-72 h-72 bg-gold/5 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-gold/5 rounded-full blur-3xl pointer-events-none"></div>
         
         {/* Parallax Starfield - 複数レイヤー + 星屑（スターダスト） */}
         {[1, 2, 3].map((layer) => (
-          <div key={`starfield-layer-${layer}`} className="absolute inset-0">
+          <div key={`starfield-layer-${layer}`} className="absolute inset-0 pointer-events-none">
             {[...Array(30)].map((_, i) => {
               const size = (Math.random() * (layer === 1 ? 1 : layer === 2 ? 2 : 3)) + 0.5;
               const speed = layer * 0.5;
@@ -266,7 +266,7 @@ export default function Home() {
               return (
                 <div
                   key={`star-${layer}-${i}`}
-                  className="absolute rounded-full bg-gold/40 parallax-star animate-stardust-breath"
+                  className="absolute rounded-full bg-gold/30 parallax-star animate-stardust-breath pointer-events-none"
                   style={{
                     width: `${size}px`,
                     height: `${size}px`,
@@ -291,7 +291,7 @@ export default function Home() {
           return (
             <div
               key={`stardust-${i}`}
-              className="absolute rounded-full bg-gold/30 parallax-star animate-stardust-breath"
+              className="absolute rounded-full bg-gold/20 parallax-star animate-stardust-breath pointer-events-none"
               style={{
                 width: `${size}px`,
                 height: `${size}px`,
@@ -308,9 +308,9 @@ export default function Home() {
         {[...Array(2)].map((_, i) => (
           <div
             key={`aurora-${i}`}
-            className="absolute w-full h-full animate-aurora"
+            className="absolute w-full h-full animate-aurora pointer-events-none"
             style={{
-              background: `linear-gradient(${i === 0 ? '135deg' : '45deg'}, transparent 0%, rgba(212, 175, 55, 0.1) 30%, rgba(212, 175, 55, 0.15) 50%, rgba(212, 175, 55, 0.1) 70%, transparent 100%)`,
+              background: `linear-gradient(${i === 0 ? '135deg' : '45deg'}, transparent 0%, rgba(212, 175, 55, 0.08) 30%, rgba(212, 175, 55, 0.12) 50%, rgba(212, 175, 55, 0.08) 70%, transparent 100%)`,
               animationDelay: `${i * 7.5}s`,
               top: `${i * 30}%`,
             }}
@@ -321,7 +321,7 @@ export default function Home() {
         {[...Array(15)].map((_, i) => (
           <div
             key={`particle-${i}`}
-            className="absolute rounded-full bg-gold/20 animate-particle-float blur-sm"
+            className="absolute rounded-full bg-gold/15 animate-particle-float blur-sm pointer-events-none"
             style={{
               width: `${Math.random() * 3 + 2}px`,
               height: `${Math.random() * 3 + 2}px`,
@@ -334,7 +334,7 @@ export default function Home() {
         ))}
       </div>
 
-      <div className="container mx-auto px-4 py-12 max-w-4xl relative z-20">
+      <div className="container mx-auto px-4 py-12 max-w-4xl relative z-10">
         {/* ヘッダー */}
         <header className="text-center mb-12 animate-fade-in-up relative z-10">
           <div className="inline-block mb-4 animate-fade-in-up-delay-1">
@@ -356,7 +356,7 @@ export default function Home() {
         </header>
 
         {/* メインコンテンツ */}
-        <div className="glass-morphism rounded-3xl shadow-gold-lg p-8 md:p-12 border border-gold/30 animate-fade-in-up-delay-2 relative z-20">
+        <div className="glass-morphism rounded-3xl shadow-gold-lg p-4 md:p-8 lg:p-12 border border-gold/30 animate-fade-in-up-delay-2 relative z-10">
           {isAnalyzing ? (
             /* 魔法陣/星座の輪のローディングアニメーション */
             <div className="text-center py-20 relative">
@@ -552,7 +552,7 @@ export default function Home() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-gradient-gold text-darkNavy font-bold py-5 px-8 rounded-xl hover:shadow-gold transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-lg relative overflow-hidden animate-fade-in-up-delay-3 ripple-effect z-10"
+                className="w-full bg-gradient-gold text-gold-button font-bold py-5 px-8 rounded-xl hover:shadow-gold transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-lg relative overflow-hidden animate-fade-in-up-delay-3 ripple-effect z-10"
               >
                 {isLoading ? (
                   <span className="flex items-center justify-center">
@@ -562,7 +562,7 @@ export default function Home() {
                 ) : (
                   <span className="flex items-center justify-center relative z-10">
                     <span className="mr-2">🔮</span>
-                    <span className="animate-gold-shine">運命を占う</span>
+                    <span>運命を占う</span>
                   </span>
                 )}
               </button>
@@ -799,12 +799,12 @@ export default function Home() {
                           }
                         }}
                         disabled={isProcessingMonthlyCheckout}
-                        className="w-full bg-gradient-gold text-darkNavy font-bold py-6 px-10 rounded-xl hover:shadow-gold-lg transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-xl relative overflow-hidden group animate-shimmer-continuous ripple-effect"
+                        className="w-full bg-gradient-gold text-gold-button font-bold py-6 px-10 rounded-xl hover:shadow-gold-lg transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-xl relative overflow-hidden group animate-shimmer-continuous ripple-effect"
                       >
                         <span className="relative z-10 flex items-center justify-center">
                           {isProcessingMonthlyCheckout ? (
                             <>
-                              <div className="w-5 h-5 border-2 border-darkNavy border-t-transparent rounded-full animate-spin mr-3"></div>
+                              <div className="w-5 h-5 border-2 border-[#0a192f] border-t-transparent rounded-full animate-spin mr-3"></div>
                               <span>決済画面へ移動中...</span>
                             </>
                           ) : (
@@ -848,7 +848,7 @@ export default function Home() {
                   onClick={() => {
                     setShowPremiumModal(true);
                   }}
-                  className="w-full bg-gradient-gold text-darkNavy font-bold py-5 px-8 rounded-xl hover:shadow-gold-lg transition-all duration-300 transform hover:scale-105 text-lg relative overflow-hidden group animate-shimmer-continuous ripple-effect"
+                  className="w-full bg-gradient-gold text-gold-button font-bold py-5 px-8 rounded-xl hover:shadow-gold-lg transition-all duration-300 transform hover:scale-105 text-lg relative overflow-hidden group animate-shimmer-continuous ripple-effect"
                 >
                   <span className="relative z-10 flex items-center justify-center">
                     <span className="mr-2">✨</span>
@@ -886,7 +886,7 @@ export default function Home() {
                     />
                     <button
                       type="submit"
-                      className="w-full bg-gradient-gold text-darkNavy font-bold py-4 px-8 rounded-xl hover:shadow-gold transition-all duration-300 transform hover:scale-105 ripple-effect"
+                      className="w-full bg-gradient-gold text-gold-button font-bold py-4 px-8 rounded-xl hover:shadow-gold transition-all duration-300 transform hover:scale-105 ripple-effect"
                     >
                       送信する
                     </button>
@@ -925,7 +925,7 @@ export default function Home() {
                       style={{ animationDelay: `${0.7 + index * 0.1}s` }}
                     >
                       {/* 相性バッジ */}
-                      <div className="absolute top-4 right-4 bg-gradient-gold text-darkNavy text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+                      <div className="absolute top-4 right-4 bg-gradient-gold text-gold-button text-xs font-bold px-3 py-1 rounded-full shadow-lg">
                         相性{profile.compatibility}%
                       </div>
                       
@@ -1063,7 +1063,7 @@ export default function Home() {
                         }
                       }}
                       disabled={isProcessingCheckout}
-                      className="w-full bg-gradient-gold text-darkNavy font-bold py-4 px-8 rounded-xl hover:shadow-gold-lg transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full bg-gradient-gold text-gold-button font-bold py-4 px-8 rounded-xl hover:shadow-gold-lg transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {isProcessingCheckout ? '処理中...' : '月額プランを選択'}
                     </button>
@@ -1101,7 +1101,7 @@ export default function Home() {
                         }
                       }}
                       disabled={isProcessingCheckout}
-                      className="w-full bg-gradient-gold text-darkNavy font-bold py-4 px-8 rounded-xl hover:shadow-gold-lg transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full bg-gradient-gold text-gold-button font-bold py-4 px-8 rounded-xl hover:shadow-gold-lg transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {isProcessingCheckout ? '処理中...' : '特別鑑定を選択'}
                     </button>

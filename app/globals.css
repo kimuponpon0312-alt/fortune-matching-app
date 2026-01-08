@@ -42,6 +42,12 @@ body {
   .shadow-gold-lg {
     box-shadow: 0 20px 60px rgba(212, 175, 55, 0.4);
   }
+  
+  /* ゴールドボタンのテキスト色（濃いネイビー） */
+  .text-gold-button {
+    color: #0a192f;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), 0 0 4px rgba(255, 255, 255, 0.3);
+  }
 }
 
 /* アニメーション */
@@ -361,7 +367,7 @@ body {
   position: relative;
   border: 2px solid transparent;
   background: linear-gradient(135deg, #1a1f3a, #2d3561) padding-box,
-              linear-gradient(90deg, transparent, #d4af37, transparent, #d4af37, transparent) border-box;
+              linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.3), transparent, rgba(212, 175, 55, 0.3), transparent) border-box;
   background-size: 200% 200%;
   animation: glowingBorder 3s linear infinite;
   pointer-events: auto; /* クリック可能にする */
