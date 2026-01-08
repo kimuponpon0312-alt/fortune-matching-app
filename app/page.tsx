@@ -118,7 +118,6 @@ export default function Home() {
   const [analyzingTextIndex, setAnalyzingTextIndex] = useState<number>(0);
   const [dailyCount, setDailyCount] = useState<number>(1248);
   const [showLightLeak, setShowLightLeak] = useState<boolean>(false);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
   
   const analyzingTexts = [
     "魂の波長を同期中...",
@@ -129,21 +128,6 @@ export default function Home() {
     "星の配置を読み解いています...",
     "前世の記憶をスキャン中...",
   ];
-  
-  // スクロール時のパララックス効果
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      const stars = document.querySelectorAll('.parallax-star');
-      stars.forEach((star, index) => {
-        const speed = (index % 3 + 1) * 0.1;
-        (star as HTMLElement).style.transform = `translateY(${scrollY * speed}px)`;
-      });
-    };
-    
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
   
   // 結果表示時のライトリークエフェクト
   useEffect(() => {
@@ -237,7 +221,7 @@ export default function Home() {
           onClick={() => onChange(option)}
           className={`flex-1 py-3 px-4 rounded-lg font-semibold text-sm md:text-base transition-all duration-300 ${
             value === option
-              ? "bg-gradient-gold text-darkNavy shadow-gold transform scale-105"
+              ? "btn-gold text-gold-button shadow-gold transform scale-105"
               : "text-gray-300 hover:text-gold hover:bg-gold/10"
           }`}
         >
@@ -255,43 +239,15 @@ export default function Home() {
         <div className="absolute top-20 left-10 w-72 h-72 bg-gold/5 rounded-full blur-3xl pointer-events-none"></div>
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-gold/5 rounded-full blur-3xl pointer-events-none"></div>
         
-        {/* Parallax Starfield - 複数レイヤー + 星屑（スターダスト） */}
-        {[1, 2, 3].map((layer) => (
-          <div key={`starfield-layer-${layer}`} className="absolute inset-0 pointer-events-none">
-            {[...Array(30)].map((_, i) => {
-              const size = (Math.random() * (layer === 1 ? 1 : layer === 2 ? 2 : 3)) + 0.5;
-              const speed = layer * 0.5;
-              const breathDuration = 2 + Math.random() * 4; // 2-6秒のランダムな呼吸リズム
-              const breathDelay = Math.random() * 3;
-              return (
-                <div
-                  key={`star-${layer}-${i}`}
-                  className="absolute rounded-full bg-gold/30 parallax-star animate-stardust-breath pointer-events-none"
-                  style={{
-                    width: `${size}px`,
-                    height: `${size}px`,
-                    left: `${Math.random() * 100}%`,
-                    top: `${Math.random() * 100}%`,
-                    '--breath-duration': `${breathDuration}s`,
-                    '--breath-delay': `${breathDelay}s`,
-                    '--parallax-x': `${(Math.random() - 0.5) * 100 * speed}px`,
-                    '--parallax-y': `${(Math.random() - 0.5) * 100 * speed}px`,
-                  } as React.CSSProperties}
-                />
-              );
-            })}
-          </div>
-        ))}
-        
-        {/* 追加の星屑（スターダスト） - より微細な明滅 */}
-        {[...Array(50)].map((_, i) => {
-          const size = Math.random() * 0.8 + 0.3;
-          const breathDuration = 1.5 + Math.random() * 3;
+        {/* 星屑（スターダスト）のみ - パララックス効果なし */}
+        {[...Array(80)].map((_, i) => {
+          const size = Math.random() * 1.5 + 0.5;
+          const breathDuration = 2 + Math.random() * 4;
           const breathDelay = Math.random() * 5;
           return (
             <div
               key={`stardust-${i}`}
-              className="absolute rounded-full bg-gold/20 parallax-star animate-stardust-breath pointer-events-none"
+              className="absolute rounded-full bg-gold/25 animate-stardust-breath pointer-events-none"
               style={{
                 width: `${size}px`,
                 height: `${size}px`,
@@ -303,35 +259,6 @@ export default function Home() {
             />
           );
         })}
-        
-        {/* オーロラエフェクト */}
-        {[...Array(2)].map((_, i) => (
-          <div
-            key={`aurora-${i}`}
-            className="absolute w-full h-full animate-aurora pointer-events-none"
-            style={{
-              background: `linear-gradient(${i === 0 ? '135deg' : '45deg'}, transparent 0%, rgba(212, 175, 55, 0.08) 30%, rgba(212, 175, 55, 0.12) 50%, rgba(212, 175, 55, 0.08) 70%, transparent 100%)`,
-              animationDelay: `${i * 7.5}s`,
-              top: `${i * 30}%`,
-            }}
-          />
-        ))}
-        
-        {/* 粒子エフェクト */}
-        {[...Array(15)].map((_, i) => (
-          <div
-            key={`particle-${i}`}
-            className="absolute rounded-full bg-gold/15 animate-particle-float blur-sm pointer-events-none"
-            style={{
-              width: `${Math.random() * 3 + 2}px`,
-              height: `${Math.random() * 3 + 2}px`,
-              left: `${Math.random() * 100}%`,
-              bottom: '-10px',
-              animationDelay: `${Math.random() * 20}s`,
-              animationDuration: `${15 + Math.random() * 10}s`,
-            }}
-          />
-        ))}
       </div>
 
       <div className="container mx-auto px-4 py-12 max-w-4xl relative z-10">

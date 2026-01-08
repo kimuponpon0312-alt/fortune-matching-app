@@ -45,15 +45,16 @@ body {
   
   /* ゴールドボタンのテキスト色（絶対的な黒） */
   .text-gold-button {
-    color: #000000 !important;
-    font-weight: 800 !important;
-    text-shadow: 0 2px 4px rgba(255, 255, 255, 0.5), 0 0 8px rgba(255, 255, 255, 0.3);
+    color: #030712 !important;
+    font-weight: 700 !important;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
     letter-spacing: 0.02em;
   }
   
   /* ゴールドボタン本体のスタイル */
   .btn-gold {
-    background: linear-gradient(135deg, #d4af37 0%, #f4e4bc 100%);
+    background: linear-gradient(135deg, #d4af37 0%, #f4e4bc 100%) !important;
+    color: #030712 !important;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(212, 175, 55, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
     position: relative;
     z-index: 10;
@@ -61,6 +62,11 @@ body {
   
   .btn-gold:hover {
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5), 0 6px 16px rgba(212, 175, 55, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  }
+  
+  .btn-gold * {
+    color: #030712 !important;
+    font-weight: 700 !important;
   }
 }
 
@@ -156,14 +162,7 @@ body {
   }
 }
 
-@keyframes starParallax {
-  0% {
-    transform: translate(0, 0);
-  }
-  100% {
-    transform: translate(var(--parallax-x, 0), var(--parallax-y, 0));
-  }
-}
+/* パララックスアニメーション - 削除（スクロール負荷の原因） */
 
 /* オーロラエフェクト */
 @keyframes aurora {
@@ -356,9 +355,7 @@ body {
   animation: starTwinkle 3s ease-in-out infinite;
 }
 
-.animate-star-parallax {
-  animation: starParallax 20s linear infinite;
-}
+/* パララックスアニメーション - 削除 */
 
 /* オーロラ */
 .animate-aurora {
@@ -426,20 +423,22 @@ body {
   animation: lightPillar 2s ease-out;
 }
 
-/* Glassmorphism - 境界線を削除し、backdrop-blurの差異で表現 */
+/* Glassmorphism - 磨りガラス効果、背景の星が透ける程度 */
 .glass-morphism {
-  background: rgba(26, 31, 58, 0.4);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: none;
+  background: rgba(26, 31, 58, 0.35);
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  border: 0.5px solid rgba(212, 175, 55, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 }
 
 /* セクション間の区切りはbackdrop-blurの強度で表現 */
 .glass-morphism-section {
-  background: rgba(26, 31, 58, 0.5);
-  backdrop-filter: blur(25px) saturate(200%);
-  -webkit-backdrop-filter: blur(25px) saturate(200%);
-  border: none;
+  background: rgba(26, 31, 58, 0.45);
+  backdrop-filter: blur(20px) saturate(170%);
+  -webkit-backdrop-filter: blur(20px) saturate(170%);
+  border: 0.5px solid rgba(212, 175, 55, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
   margin-bottom: 2rem;
 }
 
@@ -460,15 +459,7 @@ body {
   }
 }
 
-/* パララックス効果 */
-@keyframes parallaxScroll {
-  0% {
-    transform: translateY(0);
-  }
-  100% {
-    transform: translateY(var(--parallax-offset, 0));
-  }
-}
+/* パララックス効果 - 削除（スクロール負荷の原因） */
 
 /* 魔法陣/星座の輪の回転 */
 @keyframes magicCircleRotate {
@@ -549,10 +540,7 @@ body {
   animation-delay: var(--breath-delay, 0s);
 }
 
-.animate-parallax {
-  animation: parallaxScroll linear;
-  animation-timeline: scroll();
-}
+/* パララックスアニメーション - 削除 */
 
 .animate-magic-circle {
   animation: magicCircleRotate 20s linear infinite;
