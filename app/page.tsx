@@ -75,7 +75,7 @@ const PROFILES: Profile[] = [
     occupation: "大学教授",
     description: "知性と優しさを兼ね備えた方。学問と文化に深い関心を持ち、豊かな教養があります。",
     compatibility: 88,
-    type: "花",
+    type: "草花",
     avatar: "👩‍🏫",
     gender: "female",
   },
@@ -99,7 +99,7 @@ const PROFILES: Profile[] = [
     occupation: "弁護士",
     description: "正義感が強く、誠実な性格。責任感があり、パートナーを大切にする心優しい方です。",
     compatibility: 85,
-    type: "金属",
+    type: "鉄",
     avatar: "👩‍⚖️",
     gender: "female",
   },
@@ -210,10 +210,10 @@ export default function Home() {
             <span className="text-6xl">🔮</span>
           </div>
           <h1 className="text-5xl md:text-6xl font-bold mb-4 text-gradient-gold">
-            運命のマッチング
+            Soleil et Lune
           </h1>
           <p className="text-xl md:text-2xl text-gray-300 font-light">
-            四柱推命であなたの運命の相手を見つけましょう
+            四柱推命で導き出す、魂の共鳴
           </p>
           <div className="mt-4 h-1 w-24 bg-gradient-gold mx-auto rounded-full"></div>
         </header>
@@ -434,13 +434,22 @@ export default function Home() {
                     <div className="h-px bg-gradient-to-r from-transparent via-gold to-transparent flex-1"></div>
                   </div>
                   
-                  <div className="grid md:grid-cols-3 gap-6">
+                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {/* 今日の運勢 */}
                     <div className="bg-darkNavy/60 rounded-xl p-6 border border-gold/30 hover:border-gold/50 transition-all duration-300">
                       <div className="text-4xl mb-3">🌟</div>
-                      <h3 className="text-xl font-bold text-gold mb-3">今日の運勢</h3>
+                      <h3 className="text-xl font-bold text-gold mb-3">本日の運勢</h3>
                       <p className="text-gray-300 leading-relaxed text-sm">
                         {fortuneDetails.todayFortune}
+                      </p>
+                    </div>
+
+                    {/* 開運の助言 */}
+                    <div className="bg-darkNavy/60 rounded-xl p-6 border border-gold/30 hover:border-gold/50 transition-all duration-300">
+                      <div className="text-4xl mb-3">🧭</div>
+                      <h3 className="text-xl font-bold text-gold mb-3">開運の助言</h3>
+                      <p className="text-gray-300 leading-relaxed text-sm">
+                        {fortuneDetails.advice}
                       </p>
                     </div>
 
@@ -459,6 +468,15 @@ export default function Home() {
                       <h3 className="text-xl font-bold text-gold mb-3">幸運の場所</h3>
                       <p className="text-gray-300 leading-relaxed text-sm">
                         {fortuneDetails.luckyPlace}
+                      </p>
+                    </div>
+
+                    {/* ラッキーアイテム */}
+                    <div className="bg-darkNavy/60 rounded-xl p-6 border border-gold/30 hover:border-gold/50 transition-all duration-300 lg:col-span-1">
+                      <div className="text-4xl mb-3">🎁</div>
+                      <h3 className="text-xl font-bold text-gold mb-3">あなたを導くラッキーアイテム</h3>
+                      <p className="text-gray-300 leading-relaxed text-sm">
+                        {fortuneDetails.luckyItem}
                       </p>
                     </div>
                   </div>

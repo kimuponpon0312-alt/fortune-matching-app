@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "運命のマッチング - 四柱推命で見つける相性抜群の相手",
-  description: "30〜50代向けの占いマッチングアプリ。四柱推命であなたの運命の相手を見つけましょう。",
+  title: "Soleil et Lune - 四柱推命で導く魂の共鳴",
+  description: "30〜50代のための上質な占いマッチング。四柱推命で導き出す、魂が共鳴する相手を見つけましょう。",
 };
 
 export default function RootLayout({
