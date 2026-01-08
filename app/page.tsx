@@ -121,6 +121,7 @@ export default function Home() {
   const [emailSubmitted, setEmailSubmitted] = useState<boolean>(false);
   // 戦略C：モーダル
   const [showPremiumModal, setShowPremiumModal] = useState<boolean>(false);
+  const [isProcessingCheckout, setIsProcessingCheckout] = useState<boolean>(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -723,18 +724,86 @@ export default function Home() {
                 </div>
 
                 <div className="space-y-4">
-                  <button
-                    onClick={() => {
-                      alert("プレミアム会員への登録が完了しました（実装予定）");
-                      setShowPremiumModal(false);
-                    }}
-                    className="w-full bg-gradient-gold text-darkNavy font-bold py-5 px-8 rounded-xl hover:shadow-gold-lg transition-all duration-300 transform hover:scale-105 text-lg"
-                  >
-                    先行予約に登録する
-                  </button>
+                  {/* 月額プラン */}
+                  <div className="bg-darkNavy/40 rounded-xl p-6 border-2 border-gold/30">
+                    <h4 className="text-lg font-bold text-gold mb-2">月額プラン</h4>
+                    <p className="text-gray-300 text-sm mb-4">毎月の詳細な鑑定と特別コンテンツ</p>
+                    <button
+                      onClick={async () => {
+                        setIsProcessingCheckout(true);
+                        try {
+                          const response = await fetch('/api/checkout', {
+                            method: 'POST',
+                            headers: {
+                              'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                              priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_MONTHLY || 'price_xxxxx', // 月額プランの価格ID
+                              planType: 'subscription',
+                            }),
+                          });
+
+                          const data = await response.json();
+                          if (data.url) {
+                            window.location.href = data.url;
+                          } else {
+                            throw new Error('Checkout URL not found');
+                          }
+                        } catch (error) {
+                          console.error('Checkout error:', error);
+                          alert('決済処理中にエラーが発生しました。もう一度お試しください。');
+                          setIsProcessingCheckout(false);
+                        }
+                      }}
+                      disabled={isProcessingCheckout}
+                      className="w-full bg-gradient-gold text-darkNavy font-bold py-4 px-8 rounded-xl hover:shadow-gold-lg transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {isProcessingCheckout ? '処理中...' : '月額プランを選択'}
+                    </button>
+                  </div>
+
+                  {/* 今回限りの特別鑑定 */}
+                  <div className="bg-darkNavy/40 rounded-xl p-6 border-2 border-gold/30">
+                    <h4 className="text-lg font-bold text-gold mb-2">今回限りの特別鑑定</h4>
+                    <p className="text-gray-300 text-sm mb-4">一度だけの詳細な鑑定書</p>
+                    <button
+                      onClick={async () => {
+                        setIsProcessingCheckout(true);
+                        try {
+                          const response = await fetch('/api/checkout', {
+                            method: 'POST',
+                            headers: {
+                              'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                              priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_ONE_TIME || 'price_xxxxx', // 一回限りの価格ID
+                              planType: 'payment',
+                            }),
+                          });
+
+                          const data = await response.json();
+                          if (data.url) {
+                            window.location.href = data.url;
+                          } else {
+                            throw new Error('Checkout URL not found');
+                          }
+                        } catch (error) {
+                          console.error('Checkout error:', error);
+                          alert('決済処理中にエラーが発生しました。もう一度お試しください。');
+                          setIsProcessingCheckout(false);
+                        }
+                      }}
+                      disabled={isProcessingCheckout}
+                      className="w-full bg-gradient-gold text-darkNavy font-bold py-4 px-8 rounded-xl hover:shadow-gold-lg transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {isProcessingCheckout ? '処理中...' : '特別鑑定を選択'}
+                    </button>
+                  </div>
+
                   <button
                     onClick={() => setShowPremiumModal(false)}
-                    className="w-full bg-navy/80 border-2 border-gold/50 text-gold font-semibold py-3 px-6 rounded-xl hover:bg-gold/10 transition-all duration-300"
+                    disabled={isProcessingCheckout}
+                    className="w-full bg-navy/80 border-2 border-gold/50 text-gold font-semibold py-3 px-6 rounded-xl hover:bg-gold/10 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     後で考える
                   </button>
@@ -751,6 +820,14 @@ export default function Home() {
             <span className="text-gold font-semibold">東洋占星術研究機構</span>
           </div>
           <p>© 2024 Soleil et Lune - 四柱推命による相性診断</p>
+          <div className="flex items-center justify-center space-x-4 text-xs">
+            <a
+              href="/tokusho"
+              className="text-gold hover:text-lightGold transition-colors underline"
+            >
+              特定商取引法に基づく表記
+            </a>
+          </div>
           <p className="text-xs text-gray-500">
             このアプリはプロトタイプです。正確な四柱推命の計算には旧暦への変換が必要です。
           </p>

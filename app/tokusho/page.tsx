@@ -16,9 +16,9 @@ export default function TokushoPage() {
   // 一般公開用の情報（プライバシー保護）
   const publicInfo = [
     { label: '販売業者', value: 'Soleil et Lune 運営事務局' },
-    { label: '運営責任者', value: 'お問い合わせをいただいた後、遅滞なく電子メール等にて提供いたします' },
-    { label: '所在地', value: 'お問い合わせをいただいた後、遅滞なく電子メール等にて提供いたします' },
-    { label: '電話番号', value: 'お問い合わせをいただいた後、遅滞なく電子メール等にて提供いたします' },
+    { label: '運営責任者', value: '請求により遅滞なく開示いたします' },
+    { label: '所在地', value: '請求により遅滞なく開示いたします' },
+    { label: '電話番号', value: '請求により遅滞なく開示いたします' },
     { label: 'メールアドレス', value: 'contact@soleil-et-lune.com' },
     { label: '販売価格', value: '各商品購入ページに表示' },
     { label: '支払方法', value: 'クレジットカード決済 (Stripe)' },
@@ -55,11 +55,9 @@ export default function TokushoPage() {
 
         {/* メインコンテンツ */}
         <div className="bg-navy/60 backdrop-blur-md rounded-3xl shadow-gold-lg p-8 md:p-12 border border-gold/30 animate-fade-in">
-          <div className="mb-6 text-center">
+          <div className="mb-8 text-center">
             <p className="text-gray-300 text-sm leading-relaxed">
               Soleil et Lune 運営事務局では、お客様のプライバシーを最優先に考えております。
-              <br />
-              以下の情報については、お問い合わせをいただいた後、遅滞なく電子メール等にて提供いたします。
             </p>
           </div>
 
@@ -111,7 +109,7 @@ export default function TokushoPage() {
               <h3 className="text-lg font-bold text-gold mb-4">お問い合わせについて</h3>
               <p className="text-gray-300 text-sm leading-relaxed mb-4">
                 運営責任者、所在地、電話番号については、特定商取引法に基づき、
-                お問い合わせをいただいた後、遅滞なく電子メール等にて提供いたします。
+                請求により遅滞なく開示いたします。
               </p>
               <p className="text-gray-300 text-sm leading-relaxed">
                 お問い合わせ先：<span className="text-gold font-semibold">contact@soleil-et-lune.com</span>
