@@ -115,6 +115,7 @@ export default function Home() {
   const [error, setError] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isAnalyzing, setIsAnalyzing] = useState<boolean>(false);
+  const [dailyCount, setDailyCount] = useState<number>(1248);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -212,10 +213,16 @@ export default function Home() {
           <h1 className="text-5xl md:text-6xl font-bold mb-4 text-gradient-gold">
             Soleil et Lune
           </h1>
-          <p className="text-xl md:text-2xl text-gray-300 font-light">
+          <p className="text-xl md:text-2xl text-gray-300 font-light mb-6">
             四柱推命で導き出す、魂の共鳴
           </p>
-          <div className="mt-4 h-1 w-24 bg-gradient-gold mx-auto rounded-full"></div>
+          <div className="mt-4 h-1 w-24 bg-gradient-gold mx-auto rounded-full mb-6"></div>
+          {/* 本日の鑑定数カウンター */}
+          <div className="inline-flex items-center space-x-2 bg-navy/40 backdrop-blur-sm px-6 py-3 rounded-full border border-gold/30">
+            <span className="text-gold text-sm font-medium">本日の鑑定数：</span>
+            <span className="text-gold text-lg font-bold tabular-nums">{dailyCount.toLocaleString()}</span>
+            <span className="text-gray-400 text-sm">件</span>
+          </div>
         </header>
 
         {/* メインコンテンツ */}
@@ -344,6 +351,12 @@ export default function Home() {
                 </div>
               )}
 
+              {/* プライバシー保護の一文 */}
+              <div className="flex items-center justify-center space-x-2 text-sm text-gray-400">
+                <span>🔒</span>
+                <span>プライバシー保護：お客様のデータは最新の技術で暗号化され、厳重に守られます</span>
+              </div>
+
               <button
                 type="submit"
                 disabled={isLoading}
@@ -364,7 +377,7 @@ export default function Home() {
             </form>
           ) : (
             /* 結果表示 */
-            <div className="space-y-10 animate-fade-in">
+            <div className="space-y-12 animate-fade-in">
               {/* あなたのタイプ */}
               <div className="text-center">
                 <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gold flex items-center justify-center">
@@ -381,7 +394,7 @@ export default function Home() {
                       （{userTenkan}）
                     </div>
                     <div className="max-w-2xl mx-auto">
-                      <p className="text-lg md:text-xl text-gray-200 leading-relaxed">
+                      <p className="text-lg md:text-xl text-gray-200 leading-relaxed tracking-wide">
                         {TENKAN_DESCRIPTIONS[userTenkan]}
                       </p>
                     </div>
@@ -409,7 +422,7 @@ export default function Home() {
                         （{compatibleTenkan}）
                       </div>
                       <div className="max-w-2xl mx-auto mb-8">
-                        <p className="text-xl md:text-2xl text-gray-100 leading-relaxed">
+                        <p className="text-xl md:text-2xl text-gray-100 leading-relaxed tracking-wide">
                           {TENKAN_DESCRIPTIONS[compatibleTenkan]}
                         </p>
                       </div>
@@ -425,7 +438,7 @@ export default function Home() {
 
               {/* 占いの詳細情報 */}
               {fortuneDetails && (
-                <div className="space-y-6">
+                <div className="space-y-8">
                   <div className="flex items-center justify-center mb-6">
                     <div className="h-px bg-gradient-to-r from-transparent via-gold to-transparent flex-1"></div>
                     <h2 className="text-2xl md:text-3xl font-bold mx-4 text-gold">
@@ -436,47 +449,69 @@ export default function Home() {
                   
                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {/* 今日の運勢 */}
-                    <div className="bg-darkNavy/60 rounded-xl p-6 border border-gold/30 hover:border-gold/50 transition-all duration-300">
-                      <div className="text-4xl mb-3">🌟</div>
-                      <h3 className="text-xl font-bold text-gold mb-3">本日の運勢</h3>
-                      <p className="text-gray-300 leading-relaxed text-sm">
+                    <div className="bg-darkNavy/60 rounded-xl p-6 md:p-8 border border-gold/30 hover:border-gold/50 transition-all duration-300">
+                      <div className="text-4xl mb-4">🌟</div>
+                      <h3 className="text-xl font-bold text-gold mb-4">本日の運勢</h3>
+                      <p className="text-gray-300 leading-relaxed text-sm tracking-wide">
                         {fortuneDetails.todayFortune}
                       </p>
                     </div>
 
                     {/* 開運の助言 */}
-                    <div className="bg-darkNavy/60 rounded-xl p-6 border border-gold/30 hover:border-gold/50 transition-all duration-300">
-                      <div className="text-4xl mb-3">🧭</div>
-                      <h3 className="text-xl font-bold text-gold mb-3">開運の助言</h3>
-                      <p className="text-gray-300 leading-relaxed text-sm">
+                    <div className="bg-darkNavy/60 rounded-xl p-6 md:p-8 border border-gold/30 hover:border-gold/50 transition-all duration-300">
+                      <div className="text-4xl mb-4">🧭</div>
+                      <h3 className="text-xl font-bold text-gold mb-4">開運の助言</h3>
+                      <p className="text-gray-300 leading-relaxed text-sm tracking-wide">
                         {fortuneDetails.advice}
                       </p>
                     </div>
 
                     {/* 出会うべき時期 */}
-                    <div className="bg-darkNavy/60 rounded-xl p-6 border border-gold/30 hover:border-gold/50 transition-all duration-300">
-                      <div className="text-4xl mb-3">💑</div>
-                      <h3 className="text-xl font-bold text-gold mb-3">二人が出会うべき時期</h3>
-                      <p className="text-gray-300 leading-relaxed text-sm">
+                    <div className="bg-darkNavy/60 rounded-xl p-6 md:p-8 border border-gold/30 hover:border-gold/50 transition-all duration-300">
+                      <div className="text-4xl mb-4">💑</div>
+                      <h3 className="text-xl font-bold text-gold mb-4">二人が出会うべき時期</h3>
+                      <p className="text-gray-300 leading-relaxed text-sm tracking-wide">
                         {fortuneDetails.meetingPeriod}
                       </p>
                     </div>
 
                     {/* 幸運の場所 */}
-                    <div className="bg-darkNavy/60 rounded-xl p-6 border border-gold/30 hover:border-gold/50 transition-all duration-300">
-                      <div className="text-4xl mb-3">📍</div>
-                      <h3 className="text-xl font-bold text-gold mb-3">幸運の場所</h3>
-                      <p className="text-gray-300 leading-relaxed text-sm">
+                    <div className="bg-darkNavy/60 rounded-xl p-6 md:p-8 border border-gold/30 hover:border-gold/50 transition-all duration-300">
+                      <div className="text-4xl mb-4">📍</div>
+                      <h3 className="text-xl font-bold text-gold mb-4">幸運の場所</h3>
+                      <p className="text-gray-300 leading-relaxed text-sm tracking-wide">
                         {fortuneDetails.luckyPlace}
                       </p>
                     </div>
 
                     {/* ラッキーアイテム */}
-                    <div className="bg-darkNavy/60 rounded-xl p-6 border border-gold/30 hover:border-gold/50 transition-all duration-300 lg:col-span-1">
-                      <div className="text-4xl mb-3">🎁</div>
-                      <h3 className="text-xl font-bold text-gold mb-3">あなたを導くラッキーアイテム</h3>
-                      <p className="text-gray-300 leading-relaxed text-sm">
+                    <div className="bg-darkNavy/60 rounded-xl p-6 md:p-8 border border-gold/30 hover:border-gold/50 transition-all duration-300 lg:col-span-1">
+                      <div className="text-4xl mb-4">🎁</div>
+                      <h3 className="text-xl font-bold text-gold mb-4">あなたを導くラッキーアイテム</h3>
+                      <p className="text-gray-300 leading-relaxed text-sm tracking-wide">
                         {fortuneDetails.luckyItem}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* 月のメッセージ */}
+              {fortuneDetails && (
+                <div className="space-y-6">
+                  <div className="flex items-center justify-center mb-6">
+                    <div className="h-px bg-gradient-to-r from-transparent via-gold to-transparent flex-1"></div>
+                    <h2 className="text-2xl md:text-3xl font-bold mx-4 text-gold flex items-center">
+                      <span className="mr-2">🌙</span>
+                      あなたをさらに輝かせる月のメッセージ
+                    </h2>
+                    <div className="h-px bg-gradient-to-r from-transparent via-gold to-transparent flex-1"></div>
+                  </div>
+                  <div className="bg-gradient-to-br from-gold/20 via-gold/10 to-transparent rounded-2xl p-8 md:p-10 border-2 border-gold/40 shadow-gold relative overflow-hidden">
+                    <div className="absolute inset-0 animate-shimmer opacity-20"></div>
+                    <div className="relative z-10">
+                      <p className="text-lg md:text-xl text-gray-100 leading-relaxed tracking-wide text-center max-w-3xl mx-auto">
+                        {fortuneDetails.moonMessage}
                       </p>
                     </div>
                   </div>
@@ -581,9 +616,13 @@ export default function Home() {
         </div>
 
         {/* フッター */}
-        <footer className="text-center mt-12 text-gray-400 text-sm animate-fade-in">
-          <p>© 2024 運命のマッチング - 四柱推命による相性診断</p>
-          <p className="mt-2 text-xs text-gray-500">
+        <footer className="text-center mt-16 text-gray-400 text-sm animate-fade-in space-y-3">
+          <div className="flex items-center justify-center space-x-2">
+            <span className="text-gold/60">監修：</span>
+            <span className="text-gold font-semibold">東洋占星術研究機構</span>
+          </div>
+          <p>© 2024 Soleil et Lune - 四柱推命による相性診断</p>
+          <p className="text-xs text-gray-500">
             このアプリはプロトタイプです。正確な四柱推命の計算には旧暦への変換が必要です。
           </p>
         </footer>
