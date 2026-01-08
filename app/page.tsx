@@ -115,7 +115,15 @@ export default function Home() {
   const [error, setError] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isAnalyzing, setIsAnalyzing] = useState<boolean>(false);
+  const [analyzingTextIndex, setAnalyzingTextIndex] = useState<number>(0);
   const [dailyCount, setDailyCount] = useState<number>(1248);
+  
+  const analyzingTexts = [
+    "魂の波長を同期中...",
+    "宿縁の糸を手繰り寄せています...",
+    "星の配置を読み解いています...",
+    "運命の扉を開いています...",
+  ];
   // 戦略A：メール登録
   const [email, setEmail] = useState<string>("");
   const [emailSubmitted, setEmailSubmitted] = useState<boolean>(false);
@@ -141,9 +149,17 @@ export default function Home() {
 
     setIsLoading(true);
     setIsAnalyzing(true);
+    setAnalyzingTextIndex(0);
+
+    // テキスト切り替えアニメーション
+    const textInterval = setInterval(() => {
+      setAnalyzingTextIndex((prev) => (prev + 1) % analyzingTexts.length);
+    }, 800);
 
     // ローディングアニメーションを表示（2秒）
     await new Promise((resolve) => setTimeout(resolve, 2000));
+    
+    clearInterval(textInterval);
 
     const year = parseInt(birthYear);
     const month = parseInt(birthMonth);
@@ -205,24 +221,47 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-fortune relative overflow-hidden">
-      {/* 星空/粒子エフェクト背景 */}
+      {/* Parallax Starfield + オーロラ背景 */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {/* 既存の装飾的な背景要素 */}
         <div className="absolute top-20 left-10 w-72 h-72 bg-gold/5 rounded-full blur-3xl"></div>
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-gold/5 rounded-full blur-3xl"></div>
         
-        {/* 星空エフェクト */}
-        {[...Array(20)].map((_, i) => (
+        {/* Parallax Starfield - 複数レイヤー */}
+        {[1, 2, 3].map((layer) => (
+          <div key={`starfield-layer-${layer}`} className="absolute inset-0">
+            {[...Array(30)].map((_, i) => {
+              const size = (Math.random() * (layer === 1 ? 1 : layer === 2 ? 2 : 3)) + 0.5;
+              const speed = layer * 0.5;
+              return (
+                <div
+                  key={`star-${layer}-${i}`}
+                  className="absolute rounded-full bg-gold/40 animate-star-twinkle"
+                  style={{
+                    width: `${size}px`,
+                    height: `${size}px`,
+                    left: `${Math.random() * 100}%`,
+                    top: `${Math.random() * 100}%`,
+                    animationDelay: `${Math.random() * 3}s`,
+                    animationDuration: `${2 + Math.random() * 2}s`,
+                    '--parallax-x': `${(Math.random() - 0.5) * 100 * speed}px`,
+                    '--parallax-y': `${(Math.random() - 0.5) * 100 * speed}px`,
+                  } as React.CSSProperties}
+                />
+              );
+            })}
+          </div>
+        ))}
+        
+        {/* オーロラエフェクト */}
+        {[...Array(2)].map((_, i) => (
           <div
-            key={`star-${i}`}
-            className="absolute rounded-full bg-gold/40 animate-star-float"
+            key={`aurora-${i}`}
+            className="absolute w-full h-full animate-aurora"
             style={{
-              width: `${Math.random() * 2 + 1}px`,
-              height: `${Math.random() * 2 + 1}px`,
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 8}s`,
-              animationDuration: `${6 + Math.random() * 4}s`,
+              background: `linear-gradient(${i === 0 ? '135deg' : '45deg'}, transparent 0%, rgba(212, 175, 55, 0.1) 30%, rgba(212, 175, 55, 0.15) 50%, rgba(212, 175, 55, 0.1) 70%, transparent 100%)`,
+              animationDelay: `${i * 7.5}s`,
+              top: `${i * 30}%`,
             }}
           />
         ))}
@@ -250,10 +289,10 @@ export default function Home() {
           <div className="inline-block mb-4 animate-fade-in-up-delay-1">
             <span className="text-6xl">🔮</span>
           </div>
-          <h1 className="text-5xl md:text-6xl font-bold mb-4 text-gradient-gold animate-fade-in-up-delay-1">
+          <h1 className="text-5xl md:text-6xl font-bold mb-4 text-gradient-gold animate-fade-in-up-delay-1 font-serif-elegant">
             Soleil et Lune
           </h1>
-          <p className="text-xl md:text-2xl text-gray-300 font-light mb-6 animate-fade-in-up-delay-2">
+          <p className="text-xl md:text-2xl text-gray-300 font-light mb-6 animate-fade-in-up-delay-2 font-serif-elegant">
             四柱推命で導き出す、魂の共鳴
           </p>
           <div className="mt-4 h-1 w-24 bg-gradient-gold mx-auto rounded-full mb-6 animate-fade-in-up-delay-2"></div>
@@ -266,24 +305,50 @@ export default function Home() {
         </header>
 
         {/* メインコンテンツ */}
-        <div className="bg-navy/60 backdrop-blur-md rounded-3xl shadow-gold-lg p-8 md:p-12 border border-gold/30 animate-fade-in-up-delay-2">
+        <div className="glass-morphism rounded-3xl shadow-gold-lg p-8 md:p-12 border border-gold/30 animate-fade-in-up-delay-2">
           {isAnalyzing ? (
-            /* ローディングアニメーション */
-            <div className="text-center py-20">
-              <div className="inline-block mb-8">
-                <div className="relative w-24 h-24 mx-auto">
+            /* 水晶玉/天球儀ローディングアニメーション */
+            <div className="text-center py-20 relative">
+              {/* 背景の光の収束エフェクト */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="absolute w-96 h-96 bg-gold/10 rounded-full blur-3xl animate-light-converge"></div>
+              </div>
+              
+              {/* 水晶玉/天球儀 */}
+              <div className="relative z-10 mb-12">
+                <div className="relative w-48 h-48 mx-auto animate-crystal-glow">
+                  {/* 外側のリング */}
                   <div className="absolute inset-0 border-4 border-gold/30 rounded-full"></div>
-                  <div className="absolute inset-0 border-4 border-transparent border-t-gold rounded-full animate-spin"></div>
+                  <div className="absolute inset-0 border-4 border-transparent border-t-gold rounded-full animate-spin" style={{ animationDuration: '3s' }}></div>
+                  
+                  {/* 内側の天球儀 */}
+                  <div className="absolute inset-4 border-2 border-gold/50 rounded-full"></div>
+                  <div className="absolute inset-4 border-2 border-transparent border-r-gold rounded-full animate-spin" style={{ animationDuration: '2s', animationDirection: 'reverse' }}></div>
+                  
+                  {/* 中心の光 */}
+                  <div className="absolute inset-12 bg-gradient-radial from-gold/40 to-transparent rounded-full animate-pulse"></div>
+                  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-gold rounded-full shadow-gold-lg"></div>
+                  
+                  {/* 周囲の光の粒子 */}
+                  {[...Array(8)].map((_, i) => (
+                    <div
+                      key={`particle-${i}`}
+                      className="absolute top-1/2 left-1/2 w-2 h-2 bg-gold rounded-full"
+                      style={{
+                        transform: `translate(-50%, -50%) rotate(${i * 45}deg) translateY(-100px)`,
+                        animation: `lightConverge 2s ease-out ${i * 0.1}s infinite`,
+                      }}
+                    />
+                  ))}
                 </div>
               </div>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gradient-gold">
-                運命を解析中...
-              </h2>
-              <p className="text-xl text-gray-300 mb-2">あなたの運命の糸を読み解いています</p>
-              <div className="flex justify-center space-x-2 mt-6">
-                <div className="w-2 h-2 bg-gold rounded-full animate-bounce" style={{ animationDelay: "0s" }}></div>
-                <div className="w-2 h-2 bg-gold rounded-full animate-bounce" style={{ animationDelay: "0.2s" }}></div>
-                <div className="w-2 h-2 bg-gold rounded-full animate-bounce" style={{ animationDelay: "0.4s" }}></div>
+              
+              {/* テキスト切り替え */}
+              <div className="relative z-10">
+                <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gradient-gold font-serif-elegant animate-text-fade">
+                  {analyzingTexts[analyzingTextIndex]}
+                </h2>
+                <p className="text-xl text-gray-300 mb-2 font-serif-elegant">あなたの運命の糸を読み解いています</p>
               </div>
             </div>
           ) : !userTenkan ? (
@@ -299,49 +364,55 @@ export default function Home() {
                     <label className="block text-sm font-medium text-gray-300">
                       年
                     </label>
-                    <input
-                      type="number"
-                      value={birthYear}
-                      onChange={(e) => setBirthYear(e.target.value)}
-                      placeholder="1980"
-                      min="1900"
-                      max="2100"
-                      className="w-full px-5 py-4 bg-darkNavy/80 border-2 border-gold/30 rounded-xl focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 text-white text-center text-lg placeholder-gray-600 transition-all duration-300"
-                      required
-                      disabled={isLoading}
-                    />
+                    <div className="glow-border particle-burst rounded-xl">
+                      <input
+                        type="number"
+                        value={birthYear}
+                        onChange={(e) => setBirthYear(e.target.value)}
+                        placeholder="1980"
+                        min="1900"
+                        max="2100"
+                        className="w-full px-5 py-4 bg-darkNavy/80 rounded-xl focus:outline-none text-white text-center text-lg placeholder-gray-600 transition-all duration-300"
+                        required
+                        disabled={isLoading}
+                      />
+                    </div>
                   </div>
                   <div className="space-y-2 animate-fade-in-up-delay-2">
                     <label className="block text-sm font-medium text-gray-300">
                       月
                     </label>
-                    <input
-                      type="number"
-                      value={birthMonth}
-                      onChange={(e) => setBirthMonth(e.target.value)}
-                      placeholder="5"
-                      min="1"
-                      max="12"
-                      className="w-full px-5 py-4 bg-darkNavy/80 border-2 border-gold/30 rounded-xl focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 text-white text-center text-lg placeholder-gray-600 transition-all duration-300"
-                      required
-                      disabled={isLoading}
-                    />
+                    <div className="glow-border particle-burst rounded-xl">
+                      <input
+                        type="number"
+                        value={birthMonth}
+                        onChange={(e) => setBirthMonth(e.target.value)}
+                        placeholder="5"
+                        min="1"
+                        max="12"
+                        className="w-full px-5 py-4 bg-darkNavy/80 rounded-xl focus:outline-none text-white text-center text-lg placeholder-gray-600 transition-all duration-300"
+                        required
+                        disabled={isLoading}
+                      />
+                    </div>
                   </div>
                   <div className="space-y-2 animate-fade-in-up-delay-3">
                     <label className="block text-sm font-medium text-gray-300">
                       日
                     </label>
-                    <input
-                      type="number"
-                      value={birthDay}
-                      onChange={(e) => setBirthDay(e.target.value)}
-                      placeholder="15"
-                      min="1"
-                      max="31"
-                      className="w-full px-5 py-4 bg-darkNavy/80 border-2 border-gold/30 rounded-xl focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 text-white text-center text-lg placeholder-gray-600 transition-all duration-300"
-                      required
-                      disabled={isLoading}
-                    />
+                    <div className="glow-border particle-burst rounded-xl">
+                      <input
+                        type="number"
+                        value={birthDay}
+                        onChange={(e) => setBirthDay(e.target.value)}
+                        placeholder="15"
+                        min="1"
+                        max="31"
+                        className="w-full px-5 py-4 bg-darkNavy/80 rounded-xl focus:outline-none text-white text-center text-lg placeholder-gray-600 transition-all duration-300"
+                        required
+                        disabled={isLoading}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -416,21 +487,54 @@ export default function Home() {
               </button>
             </form>
           ) : (
-            /* 結果表示 */
-            <div className="space-y-12">
+            /* 結果表示 - 羊皮紙/霧が晴れるトランジション */
+            <div className="space-y-12 relative">
+              {/* 霧が晴れるエフェクト */}
+              <div className="absolute inset-0 bg-gradient-fortune animate-mist-clear pointer-events-none z-0"></div>
+              
+              {/* 紙吹雪エフェクト（最高の相性表示時） */}
+              {compatibleTenkan && (
+                <div className="absolute inset-0 overflow-hidden pointer-events-none z-20">
+                  {[...Array(30)].map((_, i) => (
+                    <div
+                      key={`confetti-${i}`}
+                      className="absolute w-2 h-2 bg-gold rounded-sm animate-confetti-fall"
+                      style={{
+                        left: `${Math.random() * 100}%`,
+                        animationDelay: `${Math.random() * 2}s`,
+                        animationDuration: `${2 + Math.random() * 1}s`,
+                      }}
+                    />
+                  ))}
+                  
+                  {/* 光の柱 */}
+                  {[...Array(5)].map((_, i) => (
+                    <div
+                      key={`pillar-${i}`}
+                      className="absolute bottom-0 w-1 bg-gradient-to-t from-gold/80 to-transparent animate-light-pillar"
+                      style={{
+                        left: `${20 + i * 15}%`,
+                        height: '100%',
+                        animationDelay: `${i * 0.2}s`,
+                      }}
+                    />
+                  ))}
+                </div>
+              )}
+              
               {/* あなたのタイプ */}
-              <div className="text-center animate-fade-in-up">
-                <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gold flex items-center justify-center">
+              <div className="text-center animate-parchment-reveal relative z-10">
+                <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gold flex items-center justify-center font-serif-elegant">
                   <span className="mr-3">✨</span>
                   あなたのタイプ
                 </h2>
-                <div className="bg-gradient-to-br from-gold/20 via-gold/10 to-transparent rounded-2xl p-8 border-2 border-gold/40 shadow-gold relative overflow-hidden">
+                <div className="glass-morphism rounded-2xl p-8 border-2 border-gold/40 shadow-gold relative overflow-hidden">
                   <div className="absolute inset-0 animate-shimmer opacity-30"></div>
                   <div className="relative z-10">
-                    <div className="text-7xl md:text-8xl font-bold mb-3 text-gold drop-shadow-lg">
+                    <div className="text-7xl md:text-8xl font-bold mb-3 text-gold drop-shadow-lg font-serif-elegant">
                       {TENKAN_NAMES[userTenkan]}
                     </div>
-                    <div className="text-3xl md:text-4xl text-gray-200 mb-6 font-medium">
+                    <div className="text-3xl md:text-4xl text-gray-200 mb-6 font-medium font-serif-elegant">
                       （{userTenkan}）
                     </div>
                     <div className="max-w-2xl mx-auto">
@@ -444,21 +548,21 @@ export default function Home() {
 
               {/* 相性抜群の相手 */}
               {compatibleTenkan && (
-                <div className="text-center animate-fade-in-up-delay-1">
+                <div className="text-center animate-parchment-reveal relative z-10" style={{ animationDelay: '0.3s' }}>
                   <div className="flex items-center justify-center mb-6">
                     <div className="h-px bg-gradient-to-r from-transparent via-gold to-transparent flex-1"></div>
-                    <h2 className="text-3xl md:text-4xl font-bold mx-4 text-gold">
+                    <h2 className="text-3xl md:text-4xl font-bold mx-4 text-gold font-serif-elegant">
                       💕 運命の相手
                     </h2>
                     <div className="h-px bg-gradient-to-r from-transparent via-gold to-transparent flex-1"></div>
                   </div>
-                  <div className="bg-gradient-to-br from-gold/40 via-gold/30 to-gold/20 rounded-2xl p-10 md:p-12 border-2 border-gold shadow-gold-lg relative overflow-hidden">
+                  <div className="glass-morphism rounded-2xl p-10 md:p-12 border-2 border-gold shadow-gold-lg relative overflow-hidden">
                     <div className="absolute inset-0 animate-shimmer opacity-20"></div>
                     <div className="relative z-10">
-                      <div className="text-8xl md:text-9xl font-bold mb-4 text-gold drop-shadow-2xl">
+                      <div className="text-8xl md:text-9xl font-bold mb-4 text-gold drop-shadow-2xl font-serif-elegant">
                         {TENKAN_NAMES[compatibleTenkan]}
                       </div>
-                      <div className="text-4xl md:text-5xl text-gray-100 mb-6 font-medium">
+                      <div className="text-4xl md:text-5xl text-gray-100 mb-6 font-medium font-serif-elegant">
                         （{compatibleTenkan}）
                       </div>
                       <div className="max-w-2xl mx-auto mb-8">
@@ -466,8 +570,8 @@ export default function Home() {
                           {TENKAN_DESCRIPTIONS[compatibleTenkan]}
                         </p>
                       </div>
-                      <div className="inline-block bg-gold/30 backdrop-blur-sm px-8 py-4 rounded-xl border-2 border-gold/60 shadow-lg">
-                        <p className="text-gold font-bold text-lg md:text-xl">
+                      <div className="inline-block bg-gold/30 backdrop-blur-sm px-8 py-4 rounded-xl border-2 border-gold/60 shadow-lg animate-parchment-reveal" style={{ animationDelay: '0.5s' }}>
+                        <p className="text-gold font-bold text-lg md:text-xl font-serif-elegant">
                           {TENKAN_NAMES[userTenkan]} × {TENKAN_NAMES[compatibleTenkan]} = 最高の相性 ✨
                         </p>
                       </div>
@@ -478,10 +582,10 @@ export default function Home() {
 
               {/* 占いの詳細情報 */}
               {fortuneDetails && (
-                <div className="space-y-8 animate-fade-in-up-delay-2">
+                <div className="space-y-8 animate-parchment-reveal relative z-10" style={{ animationDelay: '0.4s' }}>
                   <div className="flex items-center justify-center mb-6">
                     <div className="h-px bg-gradient-to-r from-transparent via-gold to-transparent flex-1"></div>
-                    <h2 className="text-2xl md:text-3xl font-bold mx-4 text-gold">
+                    <h2 className="text-2xl md:text-3xl font-bold mx-4 text-gold font-serif-elegant">
                       📜 詳細な占い結果
                     </h2>
                     <div className="h-px bg-gradient-to-r from-transparent via-gold to-transparent flex-1"></div>
@@ -489,45 +593,45 @@ export default function Home() {
                   
                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {/* 今日の運勢 */}
-                    <div className="bg-darkNavy/60 rounded-xl p-6 md:p-8 border border-gold/30 hover:border-gold/50 transition-all duration-300 animate-fade-in-up">
+                    <div className="glass-morphism rounded-xl p-6 md:p-8 border border-gold/30 hover:border-gold/50 transition-all duration-300 animate-parchment-reveal">
                       <div className="text-4xl mb-4">🌟</div>
-                      <h3 className="text-xl font-bold text-gold mb-4">本日の運勢</h3>
+                      <h3 className="text-xl font-bold text-gold mb-4 font-serif-elegant">本日の運勢</h3>
                       <p className="text-gray-300 leading-relaxed text-sm tracking-wide">
                         {fortuneDetails.todayFortune}
                       </p>
                     </div>
 
                     {/* 開運の助言 */}
-                    <div className="bg-darkNavy/60 rounded-xl p-6 md:p-8 border border-gold/30 hover:border-gold/50 transition-all duration-300 animate-fade-in-up-delay-1">
+                    <div className="glass-morphism rounded-xl p-6 md:p-8 border border-gold/30 hover:border-gold/50 transition-all duration-300 animate-parchment-reveal" style={{ animationDelay: '0.1s' }}>
                       <div className="text-4xl mb-4">🧭</div>
-                      <h3 className="text-xl font-bold text-gold mb-4">開運の助言</h3>
+                      <h3 className="text-xl font-bold text-gold mb-4 font-serif-elegant">開運の助言</h3>
                       <p className="text-gray-300 leading-relaxed text-sm tracking-wide">
                         {fortuneDetails.advice}
                       </p>
                     </div>
 
                     {/* 出会うべき時期 */}
-                    <div className="bg-darkNavy/60 rounded-xl p-6 md:p-8 border border-gold/30 hover:border-gold/50 transition-all duration-300 animate-fade-in-up-delay-2">
+                    <div className="glass-morphism rounded-xl p-6 md:p-8 border border-gold/30 hover:border-gold/50 transition-all duration-300 animate-parchment-reveal" style={{ animationDelay: '0.2s' }}>
                       <div className="text-4xl mb-4">💑</div>
-                      <h3 className="text-xl font-bold text-gold mb-4">二人が出会うべき時期</h3>
+                      <h3 className="text-xl font-bold text-gold mb-4 font-serif-elegant">二人が出会うべき時期</h3>
                       <p className="text-gray-300 leading-relaxed text-sm tracking-wide">
                         {fortuneDetails.meetingPeriod}
                       </p>
                     </div>
 
                     {/* 幸運の場所 */}
-                    <div className="bg-darkNavy/60 rounded-xl p-6 md:p-8 border border-gold/30 hover:border-gold/50 transition-all duration-300 animate-fade-in-up">
+                    <div className="glass-morphism rounded-xl p-6 md:p-8 border border-gold/30 hover:border-gold/50 transition-all duration-300 animate-parchment-reveal" style={{ animationDelay: '0.3s' }}>
                       <div className="text-4xl mb-4">📍</div>
-                      <h3 className="text-xl font-bold text-gold mb-4">幸運の場所</h3>
+                      <h3 className="text-xl font-bold text-gold mb-4 font-serif-elegant">幸運の場所</h3>
                       <p className="text-gray-300 leading-relaxed text-sm tracking-wide">
                         {fortuneDetails.luckyPlace}
                       </p>
                     </div>
 
                     {/* ラッキーアイテム */}
-                    <div className="bg-darkNavy/60 rounded-xl p-6 md:p-8 border border-gold/30 hover:border-gold/50 transition-all duration-300 lg:col-span-1 animate-fade-in-up-delay-1">
+                    <div className="glass-morphism rounded-xl p-6 md:p-8 border border-gold/30 hover:border-gold/50 transition-all duration-300 lg:col-span-1 animate-parchment-reveal" style={{ animationDelay: '0.4s' }}>
                       <div className="text-4xl mb-4">🎁</div>
-                      <h3 className="text-xl font-bold text-gold mb-4">あなたを導くラッキーアイテム</h3>
+                      <h3 className="text-xl font-bold text-gold mb-4 font-serif-elegant">あなたを導くラッキーアイテム</h3>
                       <p className="text-gray-300 leading-relaxed text-sm tracking-wide">
                         {fortuneDetails.luckyItem}
                       </p>
@@ -538,16 +642,16 @@ export default function Home() {
 
               {/* 月のメッセージ */}
               {fortuneDetails && (
-                <div className="space-y-6 animate-fade-in-up-delay-2">
+                <div className="space-y-6 animate-parchment-reveal relative z-10" style={{ animationDelay: '0.5s' }}>
                   <div className="flex items-center justify-center mb-6">
                     <div className="h-px bg-gradient-to-r from-transparent via-gold to-transparent flex-1"></div>
-                    <h2 className="text-2xl md:text-3xl font-bold mx-4 text-gold flex items-center">
+                    <h2 className="text-2xl md:text-3xl font-bold mx-4 text-gold flex items-center font-serif-elegant">
                       <span className="mr-2">🌙</span>
                       あなたをさらに輝かせる月のメッセージ
                     </h2>
                     <div className="h-px bg-gradient-to-r from-transparent via-gold to-transparent flex-1"></div>
                   </div>
-                  <div className="bg-gradient-to-br from-gold/20 via-gold/10 to-transparent rounded-2xl p-8 md:p-10 border-2 border-gold/40 shadow-gold relative overflow-hidden">
+                  <div className="glass-morphism rounded-2xl p-8 md:p-10 border-2 border-gold/40 shadow-gold relative overflow-hidden">
                     <div className="absolute inset-0 animate-shimmer opacity-20"></div>
                     <div className="relative z-10">
                       <p className="text-lg md:text-xl text-gray-100 leading-relaxed tracking-wide text-center max-w-3xl mx-auto">
@@ -710,10 +814,10 @@ export default function Home() {
 
               {/* プロフィールカード */}
               {filteredProfiles.length > 0 && (
-                <div className="space-y-6 animate-fade-in-up-delay-3">
+                <div className="space-y-6 animate-parchment-reveal relative z-10" style={{ animationDelay: '0.6s' }}>
                   <div className="flex items-center justify-center mb-6">
                     <div className="h-px bg-gradient-to-r from-transparent via-gold to-transparent flex-1"></div>
-                    <h2 className="text-2xl md:text-3xl font-bold mx-4 text-gold">
+                    <h2 className="text-2xl md:text-3xl font-bold mx-4 text-gold font-serif-elegant">
                       💫 あなたと宿縁で結ばれた相手候補
                     </h2>
                     <div className="h-px bg-gradient-to-r from-transparent via-gold to-transparent flex-1"></div>
@@ -723,9 +827,10 @@ export default function Home() {
                     {filteredProfiles.map((profile, index) => (
                     <div
                       key={profile.id}
-                      className={`bg-darkNavy/80 rounded-xl p-6 border-2 border-gold/30 hover:border-gold/60 transition-all duration-300 hover:shadow-gold transform hover:scale-105 relative overflow-hidden ${
-                        index === 0 ? 'animate-fade-in-up' : index === 1 ? 'animate-fade-in-up-delay-1' : 'animate-fade-in-up-delay-2'
+                      className={`glass-morphism rounded-xl p-6 border-2 border-gold/30 hover:border-gold/60 transition-all duration-300 hover:shadow-gold transform hover:scale-105 relative overflow-hidden ${
+                        index === 0 ? 'animate-parchment-reveal' : index === 1 ? 'animate-parchment-reveal' : 'animate-parchment-reveal'
                       }`}
+                      style={{ animationDelay: `${0.7 + index * 0.1}s` }}
                     >
                       {/* 相性バッジ */}
                       <div className="absolute top-4 right-4 bg-gradient-gold text-darkNavy text-xs font-bold px-3 py-1 rounded-full shadow-lg">
@@ -734,7 +839,7 @@ export default function Home() {
                       
                       <div className="text-center mb-4">
                         <div className="text-6xl mb-3">{profile.avatar}</div>
-                        <h3 className="text-2xl font-bold text-gold mb-1">{profile.name}</h3>
+                        <h3 className="text-2xl font-bold text-gold mb-1 font-serif-elegant">{profile.name}</h3>
                         <p className="text-gray-400 text-sm">{profile.age}歳 • {profile.location}</p>
                       </div>
                       
