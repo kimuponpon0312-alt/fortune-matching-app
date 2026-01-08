@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import Stripe from 'stripe';
 
 export async function POST(request: NextRequest) {
   try {
@@ -15,10 +16,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Stripe SDKを動的にインポート
-    const stripe = (await import('stripe')).default;
-    const stripeClient = new stripe(stripeSecretKey, {
-      apiVersion: '2024-11-20.acacia',
+    // Stripe SDKを初期化
+    const stripeClient = new Stripe(stripeSecretKey, {
+      apiVersion: '2023-10-16',
     });
 
     // チェックアウトセッションを作成
