@@ -437,6 +437,167 @@ body {
   background: radial-gradient(circle, var(--tw-gradient-stops));
 }
 
+/* 星屑（スターダスト）の明滅 - 呼吸のようなリズム */
+@keyframes stardustBreath {
+  0%, 100% {
+    opacity: 0.2;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+/* パララックス効果 */
+@keyframes parallaxScroll {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(var(--parallax-offset, 0));
+  }
+}
+
+/* 魔法陣/星座の輪の回転 */
+@keyframes magicCircleRotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* ライトリーク効果（光が広がる） */
+@keyframes lightLeak {
+  0% {
+    opacity: 0;
+    transform: scale(0) translate(-50%, -50%);
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(3) translate(-50%, -50%);
+  }
+}
+
+/* オーラの揺らぎ */
+@keyframes auraGlow {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1) translateY(0);
+    filter: blur(10px);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.1) translateY(-5px);
+    filter: blur(15px);
+  }
+}
+
+/* シマーエフェクト（光沢の移動） */
+@keyframes shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+/* 赤い糸のグラデーション */
+@keyframes redThreadGlow {
+  0%, 100% {
+    opacity: 0.4;
+    box-shadow: 0 0 10px rgba(255, 100, 100, 0.3);
+  }
+  50% {
+    opacity: 0.8;
+    box-shadow: 0 0 20px rgba(255, 100, 100, 0.6);
+  }
+}
+
+/* ポワンと光が広がる（視覚的な音） */
+@keyframes rippleExpand {
+  0% {
+    opacity: 0.8;
+    transform: scale(0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2);
+  }
+}
+
+/* アニメーションクラス */
+.animate-stardust-breath {
+  animation: stardustBreath var(--breath-duration, 3s) ease-in-out infinite;
+  animation-delay: var(--breath-delay, 0s);
+}
+
+.animate-parallax {
+  animation: parallaxScroll linear;
+  animation-timeline: scroll();
+}
+
+.animate-magic-circle {
+  animation: magicCircleRotate 20s linear infinite;
+}
+
+.animate-light-leak {
+  animation: lightLeak 1.5s ease-out;
+}
+
+.animate-aura-glow {
+  animation: auraGlow 3s ease-in-out infinite;
+}
+
+.animate-shimmer-continuous {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    transparent 30%,
+    rgba(212, 175, 55, 0.6) 50%,
+    transparent 70%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s linear infinite;
+}
+
+.animate-red-thread {
+  animation: redThreadGlow 2s ease-in-out infinite;
+  border: 2px solid;
+  border-image: linear-gradient(135deg, rgba(255, 100, 100, 0.6), rgba(255, 150, 150, 0.4), rgba(255, 100, 100, 0.6)) 1;
+}
+
+.ripple-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple-effect::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.4) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.ripple-effect:active::after {
+  animation: rippleExpand 0.6s ease-out;
+  width: 200px;
+  height: 200px;
+}
+
 /* 高級感のあるタイポグラフィとスペーシング */
 @layer base {
   p {

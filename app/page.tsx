@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   calculateTenkan,
   getCompatibleTenkan,
@@ -117,13 +117,41 @@ export default function Home() {
   const [isAnalyzing, setIsAnalyzing] = useState<boolean>(false);
   const [analyzingTextIndex, setAnalyzingTextIndex] = useState<number>(0);
   const [dailyCount, setDailyCount] = useState<number>(1248);
+  const [showLightLeak, setShowLightLeak] = useState<boolean>(false);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
   
   const analyzingTexts = [
     "魂の波長を同期中...",
     "宿縁の糸を手繰り寄せています...",
     "星の配置を読み解いています...",
     "運命の扉を開いています...",
+    "魂の同期率を測定中...",
+    "星の配置を読み解いています...",
+    "前世の記憶をスキャン中...",
   ];
+  
+  // スクロール時のパララックス効果
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const stars = document.querySelectorAll('.parallax-star');
+      stars.forEach((star, index) => {
+        const speed = (index % 3 + 1) * 0.1;
+        (star as HTMLElement).style.transform = `translateY(${scrollY * speed}px)`;
+      });
+    };
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+  
+  // 結果表示時のライトリークエフェクト
+  useEffect(() => {
+    if (userTenkan) {
+      setShowLightLeak(true);
+      setTimeout(() => setShowLightLeak(false), 1500);
+    }
+  }, [userTenkan]);
   // 戦略A：メール登録
   const [email, setEmail] = useState<string>("");
   const [emailSubmitted, setEmailSubmitted] = useState<boolean>(false);
@@ -151,10 +179,10 @@ export default function Home() {
     setIsAnalyzing(true);
     setAnalyzingTextIndex(0);
 
-    // テキスト切り替えアニメーション
+    // テキスト切り替えアニメーション（1秒おき）
     const textInterval = setInterval(() => {
       setAnalyzingTextIndex((prev) => (prev + 1) % analyzingTexts.length);
-    }, 800);
+    }, 1000);
 
     // ローディングアニメーションを表示（2秒）
     await new Promise((resolve) => setTimeout(resolve, 2000));
@@ -227,23 +255,25 @@ export default function Home() {
         <div className="absolute top-20 left-10 w-72 h-72 bg-gold/5 rounded-full blur-3xl"></div>
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-gold/5 rounded-full blur-3xl"></div>
         
-        {/* Parallax Starfield - 複数レイヤー */}
+        {/* Parallax Starfield - 複数レイヤー + 星屑（スターダスト） */}
         {[1, 2, 3].map((layer) => (
           <div key={`starfield-layer-${layer}`} className="absolute inset-0">
             {[...Array(30)].map((_, i) => {
               const size = (Math.random() * (layer === 1 ? 1 : layer === 2 ? 2 : 3)) + 0.5;
               const speed = layer * 0.5;
+              const breathDuration = 2 + Math.random() * 4; // 2-6秒のランダムな呼吸リズム
+              const breathDelay = Math.random() * 3;
               return (
                 <div
                   key={`star-${layer}-${i}`}
-                  className="absolute rounded-full bg-gold/40 animate-star-twinkle"
+                  className="absolute rounded-full bg-gold/40 parallax-star animate-stardust-breath"
                   style={{
                     width: `${size}px`,
                     height: `${size}px`,
                     left: `${Math.random() * 100}%`,
                     top: `${Math.random() * 100}%`,
-                    animationDelay: `${Math.random() * 3}s`,
-                    animationDuration: `${2 + Math.random() * 2}s`,
+                    '--breath-duration': `${breathDuration}s`,
+                    '--breath-delay': `${breathDelay}s`,
                     '--parallax-x': `${(Math.random() - 0.5) * 100 * speed}px`,
                     '--parallax-y': `${(Math.random() - 0.5) * 100 * speed}px`,
                   } as React.CSSProperties}
@@ -252,6 +282,27 @@ export default function Home() {
             })}
           </div>
         ))}
+        
+        {/* 追加の星屑（スターダスト） - より微細な明滅 */}
+        {[...Array(50)].map((_, i) => {
+          const size = Math.random() * 0.8 + 0.3;
+          const breathDuration = 1.5 + Math.random() * 3;
+          const breathDelay = Math.random() * 5;
+          return (
+            <div
+              key={`stardust-${i}`}
+              className="absolute rounded-full bg-gold/30 parallax-star animate-stardust-breath"
+              style={{
+                width: `${size}px`,
+                height: `${size}px`,
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                '--breath-duration': `${breathDuration}s`,
+                '--breath-delay': `${breathDelay}s`,
+              } as React.CSSProperties}
+            />
+          );
+        })}
         
         {/* オーロラエフェクト */}
         {[...Array(2)].map((_, i) => (
@@ -307,35 +358,65 @@ export default function Home() {
         {/* メインコンテンツ */}
         <div className="glass-morphism rounded-3xl shadow-gold-lg p-8 md:p-12 border border-gold/30 animate-fade-in-up-delay-2">
           {isAnalyzing ? (
-            /* 水晶玉/天球儀ローディングアニメーション */
+            /* 魔法陣/星座の輪のローディングアニメーション */
             <div className="text-center py-20 relative">
               {/* 背景の光の収束エフェクト */}
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="absolute w-96 h-96 bg-gold/10 rounded-full blur-3xl animate-light-converge"></div>
               </div>
               
-              {/* 水晶玉/天球儀 */}
+              {/* 魔法陣/星座の輪 */}
               <div className="relative z-10 mb-12">
-                <div className="relative w-48 h-48 mx-auto animate-crystal-glow">
-                  {/* 外側のリング */}
-                  <div className="absolute inset-0 border-4 border-gold/30 rounded-full"></div>
-                  <div className="absolute inset-0 border-4 border-transparent border-t-gold rounded-full animate-spin" style={{ animationDuration: '3s' }}></div>
+                <div className="relative w-64 h-64 mx-auto animate-crystal-glow">
+                  {/* SVG魔法陣 */}
+                  <svg className="absolute inset-0 w-full h-full animate-magic-circle" viewBox="0 0 200 200">
+                    {/* 外側の魔法陣 */}
+                    <circle cx="100" cy="100" r="90" fill="none" stroke="rgba(212, 175, 55, 0.3)" strokeWidth="2" />
+                    <circle cx="100" cy="100" r="80" fill="none" stroke="rgba(212, 175, 55, 0.4)" strokeWidth="1.5" />
+                    
+                    {/* 六芒星 */}
+                    <path
+                      d="M 100 20 L 120 80 L 180 80 L 130 120 L 150 180 L 100 140 L 50 180 L 70 120 L 20 80 L 80 80 Z"
+                      fill="none"
+                      stroke="rgba(212, 175, 55, 0.5)"
+                      strokeWidth="2"
+                    />
+                    
+                    {/* 内側の星座の輪 */}
+                    <circle cx="100" cy="100" r="50" fill="none" stroke="rgba(212, 175, 55, 0.6)" strokeWidth="1" strokeDasharray="5,5" />
+                    <circle cx="100" cy="100" r="40" fill="none" stroke="rgba(212, 175, 55, 0.4)" strokeWidth="1" />
+                    
+                    {/* 中心の星 */}
+                    <polygon
+                      points="100,60 105,75 120,75 108,85 113,100 100,90 87,100 92,85 80,75 95,75"
+                      fill="rgba(212, 175, 55, 0.8)"
+                    />
+                    
+                    {/* 回転する装飾 */}
+                    <g transform="rotate(0 100 100)">
+                      <line x1="100" y1="20" x2="100" y2="30" stroke="rgba(212, 175, 55, 0.6)" strokeWidth="2" />
+                      <line x1="100" y1="170" x2="100" y2="180" stroke="rgba(212, 175, 55, 0.6)" strokeWidth="2" />
+                      <line x1="20" y1="100" x2="30" y2="100" stroke="rgba(212, 175, 55, 0.6)" strokeWidth="2" />
+                      <line x1="170" y1="100" x2="180" y2="100" stroke="rgba(212, 175, 55, 0.6)" strokeWidth="2" />
+                    </g>
+                  </svg>
                   
-                  {/* 内側の天球儀 */}
-                  <div className="absolute inset-4 border-2 border-gold/50 rounded-full"></div>
-                  <div className="absolute inset-4 border-2 border-transparent border-r-gold rounded-full animate-spin" style={{ animationDuration: '2s', animationDirection: 'reverse' }}></div>
+                  {/* 逆回転する内側の魔法陣 */}
+                  <svg className="absolute inset-0 w-full h-full" style={{ animation: 'magicCircleRotate 15s linear infinite reverse' }} viewBox="0 0 200 200">
+                    <circle cx="100" cy="100" r="60" fill="none" stroke="rgba(212, 175, 55, 0.3)" strokeWidth="1" strokeDasharray="3,3" />
+                    <circle cx="100" cy="100" r="30" fill="none" stroke="rgba(212, 175, 55, 0.4)" strokeWidth="1" />
+                  </svg>
                   
                   {/* 中心の光 */}
-                  <div className="absolute inset-12 bg-gradient-radial from-gold/40 to-transparent rounded-full animate-pulse"></div>
-                  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-gold rounded-full shadow-gold-lg"></div>
+                  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-gold rounded-full shadow-gold-lg animate-pulse"></div>
                   
                   {/* 周囲の光の粒子 */}
-                  {[...Array(8)].map((_, i) => (
+                  {[...Array(12)].map((_, i) => (
                     <div
                       key={`particle-${i}`}
                       className="absolute top-1/2 left-1/2 w-2 h-2 bg-gold rounded-full"
                       style={{
-                        transform: `translate(-50%, -50%) rotate(${i * 45}deg) translateY(-100px)`,
+                        transform: `translate(-50%, -50%) rotate(${i * 30}deg) translateY(-120px)`,
                         animation: `lightConverge 2s ease-out ${i * 0.1}s infinite`,
                       }}
                     />
@@ -343,7 +424,7 @@ export default function Home() {
                 </div>
               </div>
               
-              {/* テキスト切り替え */}
+              {/* テキスト切り替え（1秒おき） */}
               <div className="relative z-10">
                 <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gradient-gold font-serif-elegant animate-text-fade">
                   {analyzingTexts[analyzingTextIndex]}
@@ -471,7 +552,7 @@ export default function Home() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-gradient-gold text-darkNavy font-bold py-5 px-8 rounded-xl hover:shadow-gold transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-lg relative overflow-hidden animate-fade-in-up-delay-3"
+                className="w-full bg-gradient-gold text-darkNavy font-bold py-5 px-8 rounded-xl hover:shadow-gold transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-lg relative overflow-hidden animate-fade-in-up-delay-3 ripple-effect"
               >
                 {isLoading ? (
                   <span className="flex items-center justify-center">
@@ -489,6 +570,13 @@ export default function Home() {
           ) : (
             /* 結果表示 - 羊皮紙/霧が晴れるトランジション */
             <div className="space-y-12 relative">
+              {/* ライトリーク効果（画面中央から外側へ光が広がる） */}
+              {showLightLeak && (
+                <div className="fixed inset-0 pointer-events-none z-50 flex items-center justify-center">
+                  <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-gradient-radial from-gold/60 via-gold/30 to-transparent rounded-full animate-light-leak"></div>
+                </div>
+              )}
+              
               {/* 霧が晴れるエフェクト */}
               <div className="absolute inset-0 bg-gradient-fortune animate-mist-clear pointer-events-none z-0"></div>
               
@@ -530,8 +618,12 @@ export default function Home() {
                 </h2>
                 <div className="glass-morphism rounded-2xl p-8 border-2 border-gold/40 shadow-gold relative overflow-hidden">
                   <div className="absolute inset-0 animate-shimmer opacity-30"></div>
+                  
+                  {/* オーラの揺らぎ（タイプ文字の背後） */}
+                  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-radial from-gold/20 via-gold/10 to-transparent rounded-full animate-aura-glow pointer-events-none"></div>
+                  
                   <div className="relative z-10">
-                    <div className="text-7xl md:text-8xl font-bold mb-3 text-gold drop-shadow-lg font-serif-elegant">
+                    <div className="text-7xl md:text-8xl font-bold mb-3 text-gold drop-shadow-lg font-serif-elegant relative">
                       {TENKAN_NAMES[userTenkan]}
                     </div>
                     <div className="text-3xl md:text-4xl text-gray-200 mb-6 font-medium font-serif-elegant">
@@ -707,7 +799,7 @@ export default function Home() {
                           }
                         }}
                         disabled={isProcessingMonthlyCheckout}
-                        className="w-full bg-gradient-gold text-darkNavy font-bold py-6 px-10 rounded-xl hover:shadow-gold-lg transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-xl relative overflow-hidden group"
+                        className="w-full bg-gradient-gold text-darkNavy font-bold py-6 px-10 rounded-xl hover:shadow-gold-lg transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-xl relative overflow-hidden group animate-shimmer-continuous ripple-effect"
                       >
                         <span className="relative z-10 flex items-center justify-center">
                           {isProcessingMonthlyCheckout ? (
@@ -756,7 +848,7 @@ export default function Home() {
                   onClick={() => {
                     setShowPremiumModal(true);
                   }}
-                  className="w-full bg-gradient-gold text-darkNavy font-bold py-5 px-8 rounded-xl hover:shadow-gold-lg transition-all duration-300 transform hover:scale-105 text-lg relative overflow-hidden group"
+                  className="w-full bg-gradient-gold text-darkNavy font-bold py-5 px-8 rounded-xl hover:shadow-gold-lg transition-all duration-300 transform hover:scale-105 text-lg relative overflow-hidden group animate-shimmer-continuous ripple-effect"
                 >
                   <span className="relative z-10 flex items-center justify-center">
                     <span className="mr-2">✨</span>
@@ -794,7 +886,7 @@ export default function Home() {
                     />
                     <button
                       type="submit"
-                      className="w-full bg-gradient-gold text-darkNavy font-bold py-4 px-8 rounded-xl hover:shadow-gold transition-all duration-300 transform hover:scale-105"
+                      className="w-full bg-gradient-gold text-darkNavy font-bold py-4 px-8 rounded-xl hover:shadow-gold transition-all duration-300 transform hover:scale-105 ripple-effect"
                     >
                       送信する
                     </button>
@@ -838,7 +930,10 @@ export default function Home() {
                       </div>
                       
                       <div className="text-center mb-4">
-                        <div className="text-6xl mb-3">{profile.avatar}</div>
+                        {/* 宿縁の赤い糸の枠 */}
+                        <div className="inline-block p-2 rounded-full animate-red-thread mb-3">
+                          <div className="text-6xl">{profile.avatar}</div>
+                        </div>
                         <h3 className="text-2xl font-bold text-gold mb-1 font-serif-elegant">{profile.name}</h3>
                         <p className="text-gray-400 text-sm">{profile.age}歳 • {profile.location}</p>
                       </div>
