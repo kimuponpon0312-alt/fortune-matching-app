@@ -356,7 +356,7 @@ export default function Home() {
         </header>
 
         {/* メインコンテンツ */}
-        <div className="glass-morphism rounded-3xl shadow-gold-lg p-4 md:p-8 lg:p-12 border border-gold/30 animate-fade-in-up-delay-2 relative z-10">
+        <div className="glass-morphism rounded-3xl shadow-gold-lg p-4 md:p-8 lg:p-12 animate-fade-in-up-delay-2 relative z-10">
           {isAnalyzing ? (
             /* 魔法陣/星座の輪のローディングアニメーション */
             <div className="text-center py-20 relative">
@@ -445,7 +445,7 @@ export default function Home() {
                     <label className="block text-sm font-medium text-gray-300">
                       年
                     </label>
-                    <div className="glow-border particle-burst rounded-xl relative z-10">
+                    <div className="particle-burst rounded-xl relative z-10">
                       <input
                         type="number"
                         value={birthYear}
@@ -453,7 +453,7 @@ export default function Home() {
                         placeholder="1980"
                         min="1900"
                         max="2100"
-                        className="w-full px-5 py-4 bg-darkNavy/90 rounded-xl focus:outline-none text-white text-center text-lg placeholder-gray-500 transition-all duration-300 border-2 border-gold/40 focus:border-gold focus:bg-darkNavy"
+                        className="w-full px-5 py-4 bg-darkNavy/90 rounded-xl focus:outline-none text-white text-center text-lg placeholder-gray-500 transition-all duration-300 border-2 border-gold/30 focus:border-gold/60 focus:bg-darkNavy focus:ring-2 focus:ring-gold/20"
                         required
                         disabled={isLoading}
                       />
@@ -463,7 +463,7 @@ export default function Home() {
                     <label className="block text-sm font-medium text-gray-300">
                       月
                     </label>
-                    <div className="glow-border particle-burst rounded-xl relative z-10">
+                    <div className="particle-burst rounded-xl relative z-10">
                       <input
                         type="number"
                         value={birthMonth}
@@ -471,7 +471,7 @@ export default function Home() {
                         placeholder="5"
                         min="1"
                         max="12"
-                        className="w-full px-5 py-4 bg-darkNavy/90 rounded-xl focus:outline-none text-white text-center text-lg placeholder-gray-500 transition-all duration-300 border-2 border-gold/40 focus:border-gold focus:bg-darkNavy"
+                        className="w-full px-5 py-4 bg-darkNavy/90 rounded-xl focus:outline-none text-white text-center text-lg placeholder-gray-500 transition-all duration-300 border-2 border-gold/30 focus:border-gold/60 focus:bg-darkNavy focus:ring-2 focus:ring-gold/20"
                         required
                         disabled={isLoading}
                       />
@@ -481,7 +481,7 @@ export default function Home() {
                     <label className="block text-sm font-medium text-gray-300">
                       日
                     </label>
-                    <div className="glow-border particle-burst rounded-xl relative z-10">
+                    <div className="particle-burst rounded-xl relative z-10">
                       <input
                         type="number"
                         value={birthDay}
@@ -489,7 +489,7 @@ export default function Home() {
                         placeholder="15"
                         min="1"
                         max="31"
-                        className="w-full px-5 py-4 bg-darkNavy/90 rounded-xl focus:outline-none text-white text-center text-lg placeholder-gray-500 transition-all duration-300 border-2 border-gold/40 focus:border-gold focus:bg-darkNavy"
+                        className="w-full px-5 py-4 bg-darkNavy/90 rounded-xl focus:outline-none text-white text-center text-lg placeholder-gray-500 transition-all duration-300 border-2 border-gold/30 focus:border-gold/60 focus:bg-darkNavy focus:ring-2 focus:ring-gold/20"
                         required
                         disabled={isLoading}
                       />
@@ -552,7 +552,7 @@ export default function Home() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-gradient-gold text-gold-button font-bold py-5 px-8 rounded-xl hover:shadow-gold transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-lg relative overflow-hidden animate-fade-in-up-delay-3 ripple-effect z-10"
+                className="w-full btn-gold text-gold-button py-5 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-lg relative overflow-hidden animate-fade-in-up-delay-3 ripple-effect z-10"
               >
                 {isLoading ? (
                   <span className="flex items-center justify-center">
@@ -616,7 +616,7 @@ export default function Home() {
                   <span className="mr-3">✨</span>
                   あなたのタイプ
                 </h2>
-                <div className="glass-morphism rounded-2xl p-8 border-2 border-gold/40 shadow-gold relative overflow-hidden">
+                <div className="glass-morphism-section rounded-2xl p-8 shadow-gold relative overflow-hidden">
                   <div className="absolute inset-0 animate-shimmer opacity-30"></div>
                   
                   {/* オーラの揺らぎ（タイプ文字の背後） */}
@@ -648,7 +648,7 @@ export default function Home() {
                     </h2>
                     <div className="h-px bg-gradient-to-r from-transparent via-gold to-transparent flex-1"></div>
                   </div>
-                  <div className="glass-morphism rounded-2xl p-10 md:p-12 border-2 border-gold shadow-gold-lg relative overflow-hidden">
+                  <div className="glass-morphism-section rounded-2xl p-10 md:p-12 shadow-gold-lg relative overflow-hidden">
                     <div className="absolute inset-0 animate-shimmer opacity-20"></div>
                     <div className="relative z-10">
                       <div className="text-8xl md:text-9xl font-bold mb-4 text-gold drop-shadow-2xl font-serif-elegant">
@@ -662,7 +662,7 @@ export default function Home() {
                           {TENKAN_DESCRIPTIONS[compatibleTenkan]}
                         </p>
                       </div>
-                      <div className="inline-block bg-gold/30 backdrop-blur-sm px-8 py-4 rounded-xl border-2 border-gold/60 shadow-lg animate-parchment-reveal" style={{ animationDelay: '0.5s' }}>
+                      <div className="inline-block bg-gold/30 backdrop-blur-sm px-8 py-4 rounded-xl shadow-lg animate-parchment-reveal" style={{ animationDelay: '0.5s' }}>
                         <p className="text-gold font-bold text-lg md:text-xl font-serif-elegant">
                           {TENKAN_NAMES[userTenkan]} × {TENKAN_NAMES[compatibleTenkan]} = 最高の相性 ✨
                         </p>
@@ -685,7 +685,7 @@ export default function Home() {
                   
                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {/* 今日の運勢 */}
-                    <div className="glass-morphism rounded-xl p-6 md:p-8 border border-gold/30 hover:border-gold/50 transition-all duration-300 animate-parchment-reveal">
+                    <div className="glass-morphism rounded-xl p-6 md:p-8 transition-all duration-300 animate-parchment-reveal hover:backdrop-blur-[25px]">
                       <div className="text-4xl mb-4">🌟</div>
                       <h3 className="text-xl font-bold text-gold mb-4 font-serif-elegant">本日の運勢</h3>
                       <p className="text-gray-300 leading-relaxed text-sm tracking-wide">
@@ -743,7 +743,7 @@ export default function Home() {
                     </h2>
                     <div className="h-px bg-gradient-to-r from-transparent via-gold to-transparent flex-1"></div>
                   </div>
-                  <div className="glass-morphism rounded-2xl p-8 md:p-10 border-2 border-gold/40 shadow-gold relative overflow-hidden">
+                  <div className="glass-morphism-section rounded-2xl p-8 md:p-10 shadow-gold relative overflow-hidden">
                     <div className="absolute inset-0 animate-shimmer opacity-20"></div>
                     <div className="relative z-10">
                       <p className="text-lg md:text-xl text-gray-100 leading-relaxed tracking-wide text-center max-w-3xl mx-auto">
@@ -799,7 +799,7 @@ export default function Home() {
                           }
                         }}
                         disabled={isProcessingMonthlyCheckout}
-                        className="w-full bg-gradient-gold text-gold-button font-bold py-6 px-10 rounded-xl hover:shadow-gold-lg transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-xl relative overflow-hidden group animate-shimmer-continuous ripple-effect"
+                        className="w-full btn-gold text-gold-button py-6 px-10 rounded-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-xl relative overflow-hidden group animate-shimmer-continuous ripple-effect"
                       >
                         <span className="relative z-10 flex items-center justify-center">
                           {isProcessingMonthlyCheckout ? (
@@ -848,7 +848,7 @@ export default function Home() {
                   onClick={() => {
                     setShowPremiumModal(true);
                   }}
-                  className="w-full bg-gradient-gold text-gold-button font-bold py-5 px-8 rounded-xl hover:shadow-gold-lg transition-all duration-300 transform hover:scale-105 text-lg relative overflow-hidden group animate-shimmer-continuous ripple-effect"
+                  className="w-full btn-gold text-gold-button py-5 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 text-lg relative overflow-hidden group animate-shimmer-continuous ripple-effect"
                 >
                   <span className="relative z-10 flex items-center justify-center">
                     <span className="mr-2">✨</span>
@@ -886,7 +886,7 @@ export default function Home() {
                     />
                     <button
                       type="submit"
-                      className="w-full bg-gradient-gold text-gold-button font-bold py-4 px-8 rounded-xl hover:shadow-gold transition-all duration-300 transform hover:scale-105 ripple-effect"
+                      className="w-full btn-gold text-gold-button py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 ripple-effect"
                     >
                       送信する
                     </button>
@@ -919,13 +919,13 @@ export default function Home() {
                     {filteredProfiles.map((profile, index) => (
                     <div
                       key={profile.id}
-                      className={`glass-morphism rounded-xl p-6 border-2 border-gold/30 hover:border-gold/60 transition-all duration-300 hover:shadow-gold transform hover:scale-105 relative overflow-hidden ${
+                      className={`glass-morphism rounded-xl p-6 transition-all duration-300 hover:shadow-gold transform hover:scale-105 relative overflow-hidden hover:backdrop-blur-[25px] ${
                         index === 0 ? 'animate-parchment-reveal' : index === 1 ? 'animate-parchment-reveal' : 'animate-parchment-reveal'
                       }`}
                       style={{ animationDelay: `${0.7 + index * 0.1}s` }}
                     >
                       {/* 相性バッジ */}
-                      <div className="absolute top-4 right-4 bg-gradient-gold text-gold-button text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+                      <div className="absolute top-4 right-4 btn-gold text-gold-button text-xs px-3 py-1 rounded-full shadow-lg">
                         相性{profile.compatibility}%
                       </div>
                       
@@ -1063,7 +1063,7 @@ export default function Home() {
                         }
                       }}
                       disabled={isProcessingCheckout}
-                      className="w-full bg-gradient-gold text-gold-button font-bold py-4 px-8 rounded-xl hover:shadow-gold-lg transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full btn-gold text-gold-button py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {isProcessingCheckout ? '処理中...' : '月額プランを選択'}
                     </button>
@@ -1101,7 +1101,7 @@ export default function Home() {
                         }
                       }}
                       disabled={isProcessingCheckout}
-                      className="w-full bg-gradient-gold text-gold-button font-bold py-4 px-8 rounded-xl hover:shadow-gold-lg transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full btn-gold text-gold-button py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {isProcessingCheckout ? '処理中...' : '特別鑑定を選択'}
                     </button>
