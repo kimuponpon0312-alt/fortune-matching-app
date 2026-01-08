@@ -47,12 +47,32 @@ body {
   }
 }
 
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @keyframes shimmer {
   0% {
     background-position: -1000px 0;
   }
   100% {
     background-position: 1000px 0;
+  }
+}
+
+@keyframes goldShine {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
   }
 }
 
@@ -67,8 +87,55 @@ body {
   }
 }
 
+@keyframes starFloat {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translate(20px, -20px) scale(1.2);
+    opacity: 0.6;
+  }
+}
+
+@keyframes particleFloat {
+  0% {
+    transform: translateY(0) translateX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.4;
+  }
+  90% {
+    opacity: 0.4;
+  }
+  100% {
+    transform: translateY(-100vh) translateX(20px);
+    opacity: 0;
+  }
+}
+
 .animate-fade-in {
   animation: fadeIn 0.6s ease-out;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.animate-fade-in-up-delay-1 {
+  animation: fadeInUp 0.8s ease-out 0.1s;
+  animation-fill-mode: both;
+}
+
+.animate-fade-in-up-delay-2 {
+  animation: fadeInUp 0.8s ease-out 0.2s;
+  animation-fill-mode: both;
+}
+
+.animate-fade-in-up-delay-3 {
+  animation: fadeInUp 0.8s ease-out 0.3s;
+  animation-fill-mode: both;
 }
 
 .animate-shimmer {
@@ -82,8 +149,32 @@ body {
   animation: shimmer 3s infinite;
 }
 
+.animate-gold-shine {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    transparent 30%,
+    rgba(212, 175, 55, 0.8) 50%,
+    transparent 70%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: goldShine 3s ease-in-out infinite;
+}
+
 .animate-modal-fade-in {
   animation: modalFadeIn 0.3s ease-out;
+}
+
+.animate-star-float {
+  animation: starFloat 8s ease-in-out infinite;
+}
+
+.animate-particle-float {
+  animation: particleFloat 20s linear infinite;
 }
 
 /* 高級感のあるタイポグラフィとスペーシング */

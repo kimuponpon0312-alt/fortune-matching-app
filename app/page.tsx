@@ -122,6 +122,7 @@ export default function Home() {
   // 戦略C：モーダル
   const [showPremiumModal, setShowPremiumModal] = useState<boolean>(false);
   const [isProcessingCheckout, setIsProcessingCheckout] = useState<boolean>(false);
+  const [isProcessingMonthlyCheckout, setIsProcessingMonthlyCheckout] = useState<boolean>(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -204,27 +205,60 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-fortune relative overflow-hidden">
-      {/* 装飾的な背景要素 */}
+      {/* 星空/粒子エフェクト背景 */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* 既存の装飾的な背景要素 */}
         <div className="absolute top-20 left-10 w-72 h-72 bg-gold/5 rounded-full blur-3xl"></div>
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-gold/5 rounded-full blur-3xl"></div>
+        
+        {/* 星空エフェクト */}
+        {[...Array(20)].map((_, i) => (
+          <div
+            key={`star-${i}`}
+            className="absolute rounded-full bg-gold/40 animate-star-float"
+            style={{
+              width: `${Math.random() * 2 + 1}px`,
+              height: `${Math.random() * 2 + 1}px`,
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 8}s`,
+              animationDuration: `${6 + Math.random() * 4}s`,
+            }}
+          />
+        ))}
+        
+        {/* 粒子エフェクト */}
+        {[...Array(15)].map((_, i) => (
+          <div
+            key={`particle-${i}`}
+            className="absolute rounded-full bg-gold/20 animate-particle-float blur-sm"
+            style={{
+              width: `${Math.random() * 3 + 2}px`,
+              height: `${Math.random() * 3 + 2}px`,
+              left: `${Math.random() * 100}%`,
+              bottom: '-10px',
+              animationDelay: `${Math.random() * 20}s`,
+              animationDuration: `${15 + Math.random() * 10}s`,
+            }}
+          />
+        ))}
       </div>
 
       <div className="container mx-auto px-4 py-12 max-w-4xl relative z-10">
         {/* ヘッダー */}
-        <header className="text-center mb-12 animate-fade-in">
-          <div className="inline-block mb-4">
+        <header className="text-center mb-12 animate-fade-in-up">
+          <div className="inline-block mb-4 animate-fade-in-up-delay-1">
             <span className="text-6xl">🔮</span>
           </div>
-          <h1 className="text-5xl md:text-6xl font-bold mb-4 text-gradient-gold">
+          <h1 className="text-5xl md:text-6xl font-bold mb-4 text-gradient-gold animate-fade-in-up-delay-1">
             Soleil et Lune
           </h1>
-          <p className="text-xl md:text-2xl text-gray-300 font-light mb-6">
+          <p className="text-xl md:text-2xl text-gray-300 font-light mb-6 animate-fade-in-up-delay-2">
             四柱推命で導き出す、魂の共鳴
           </p>
-          <div className="mt-4 h-1 w-24 bg-gradient-gold mx-auto rounded-full mb-6"></div>
+          <div className="mt-4 h-1 w-24 bg-gradient-gold mx-auto rounded-full mb-6 animate-fade-in-up-delay-2"></div>
           {/* 本日の鑑定数カウンター */}
-          <div className="inline-flex items-center space-x-2 bg-navy/40 backdrop-blur-sm px-6 py-3 rounded-full border border-gold/30">
+          <div className="inline-flex items-center space-x-2 bg-navy/40 backdrop-blur-sm px-6 py-3 rounded-full border border-gold/30 animate-fade-in-up-delay-3">
             <span className="text-gold text-sm font-medium">本日の鑑定数：</span>
             <span className="text-gold text-lg font-bold tabular-nums">{dailyCount.toLocaleString()}</span>
             <span className="text-gray-400 text-sm">件</span>
@@ -232,7 +266,7 @@ export default function Home() {
         </header>
 
         {/* メインコンテンツ */}
-        <div className="bg-navy/60 backdrop-blur-md rounded-3xl shadow-gold-lg p-8 md:p-12 border border-gold/30 animate-fade-in">
+        <div className="bg-navy/60 backdrop-blur-md rounded-3xl shadow-gold-lg p-8 md:p-12 border border-gold/30 animate-fade-in-up-delay-2">
           {isAnalyzing ? (
             /* ローディングアニメーション */
             <div className="text-center py-20">
@@ -255,13 +289,13 @@ export default function Home() {
           ) : !userTenkan ? (
             /* 入力フォーム */
             <form onSubmit={handleSubmit} className="space-y-8">
-              <div>
+              <div className="animate-fade-in-up">
                 <label className="block text-xl font-semibold mb-6 text-gold text-center">
                   <span className="inline-block mr-2">📅</span>
                   生年月日を入力してください
                 </label>
                 <div className="grid grid-cols-3 gap-4 md:gap-6">
-                  <div className="space-y-2">
+                  <div className="space-y-2 animate-fade-in-up-delay-1">
                     <label className="block text-sm font-medium text-gray-300">
                       年
                     </label>
@@ -277,7 +311,7 @@ export default function Home() {
                       disabled={isLoading}
                     />
                   </div>
-                  <div className="space-y-2">
+                  <div className="space-y-2 animate-fade-in-up-delay-2">
                     <label className="block text-sm font-medium text-gray-300">
                       月
                     </label>
@@ -293,7 +327,7 @@ export default function Home() {
                       disabled={isLoading}
                     />
                   </div>
-                  <div className="space-y-2">
+                  <div className="space-y-2 animate-fade-in-up-delay-3">
                     <label className="block text-sm font-medium text-gray-300">
                       日
                     </label>
@@ -313,7 +347,7 @@ export default function Home() {
               </div>
 
               {/* 性別選択 */}
-              <div className="space-y-4">
+              <div className="space-y-4 animate-fade-in-up-delay-1">
                 <label className="block text-lg font-semibold text-gold text-center">
                   <span className="inline-block mr-2">👤</span>
                   あなたの性別
@@ -331,7 +365,7 @@ export default function Home() {
               </div>
 
               {/* 探している相手の性別 */}
-              <div className="space-y-4">
+              <div className="space-y-4 animate-fade-in-up-delay-2">
                 <label className="block text-lg font-semibold text-gold text-center">
                   <span className="inline-block mr-2">💕</span>
                   探している相手
@@ -358,7 +392,7 @@ export default function Home() {
               )}
 
               {/* プライバシー保護の一文 */}
-              <div className="flex items-center justify-center space-x-2 text-sm text-gray-400">
+              <div className="flex items-center justify-center space-x-2 text-sm text-gray-400 animate-fade-in-up-delay-2">
                 <span>🔒</span>
                 <span>プライバシー保護：お客様のデータは最新の技術で暗号化され、厳重に守られます</span>
               </div>
@@ -366,7 +400,7 @@ export default function Home() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-gradient-gold text-darkNavy font-bold py-5 px-8 rounded-xl hover:shadow-gold transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-lg"
+                className="w-full bg-gradient-gold text-darkNavy font-bold py-5 px-8 rounded-xl hover:shadow-gold transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-lg relative overflow-hidden animate-fade-in-up-delay-3"
               >
                 {isLoading ? (
                   <span className="flex items-center justify-center">
@@ -374,18 +408,18 @@ export default function Home() {
                     占い中...
                   </span>
                 ) : (
-                  <span className="flex items-center justify-center">
+                  <span className="flex items-center justify-center relative z-10">
                     <span className="mr-2">🔮</span>
-                    運命を占う
+                    <span className="animate-gold-shine">運命を占う</span>
                   </span>
                 )}
               </button>
             </form>
           ) : (
             /* 結果表示 */
-            <div className="space-y-12 animate-fade-in">
+            <div className="space-y-12">
               {/* あなたのタイプ */}
-              <div className="text-center">
+              <div className="text-center animate-fade-in-up">
                 <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gold flex items-center justify-center">
                   <span className="mr-3">✨</span>
                   あなたのタイプ
@@ -410,7 +444,7 @@ export default function Home() {
 
               {/* 相性抜群の相手 */}
               {compatibleTenkan && (
-                <div className="text-center">
+                <div className="text-center animate-fade-in-up-delay-1">
                   <div className="flex items-center justify-center mb-6">
                     <div className="h-px bg-gradient-to-r from-transparent via-gold to-transparent flex-1"></div>
                     <h2 className="text-3xl md:text-4xl font-bold mx-4 text-gold">
@@ -444,7 +478,7 @@ export default function Home() {
 
               {/* 占いの詳細情報 */}
               {fortuneDetails && (
-                <div className="space-y-8">
+                <div className="space-y-8 animate-fade-in-up-delay-2">
                   <div className="flex items-center justify-center mb-6">
                     <div className="h-px bg-gradient-to-r from-transparent via-gold to-transparent flex-1"></div>
                     <h2 className="text-2xl md:text-3xl font-bold mx-4 text-gold">
@@ -455,7 +489,7 @@ export default function Home() {
                   
                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {/* 今日の運勢 */}
-                    <div className="bg-darkNavy/60 rounded-xl p-6 md:p-8 border border-gold/30 hover:border-gold/50 transition-all duration-300">
+                    <div className="bg-darkNavy/60 rounded-xl p-6 md:p-8 border border-gold/30 hover:border-gold/50 transition-all duration-300 animate-fade-in-up">
                       <div className="text-4xl mb-4">🌟</div>
                       <h3 className="text-xl font-bold text-gold mb-4">本日の運勢</h3>
                       <p className="text-gray-300 leading-relaxed text-sm tracking-wide">
@@ -464,7 +498,7 @@ export default function Home() {
                     </div>
 
                     {/* 開運の助言 */}
-                    <div className="bg-darkNavy/60 rounded-xl p-6 md:p-8 border border-gold/30 hover:border-gold/50 transition-all duration-300">
+                    <div className="bg-darkNavy/60 rounded-xl p-6 md:p-8 border border-gold/30 hover:border-gold/50 transition-all duration-300 animate-fade-in-up-delay-1">
                       <div className="text-4xl mb-4">🧭</div>
                       <h3 className="text-xl font-bold text-gold mb-4">開運の助言</h3>
                       <p className="text-gray-300 leading-relaxed text-sm tracking-wide">
@@ -473,7 +507,7 @@ export default function Home() {
                     </div>
 
                     {/* 出会うべき時期 */}
-                    <div className="bg-darkNavy/60 rounded-xl p-6 md:p-8 border border-gold/30 hover:border-gold/50 transition-all duration-300">
+                    <div className="bg-darkNavy/60 rounded-xl p-6 md:p-8 border border-gold/30 hover:border-gold/50 transition-all duration-300 animate-fade-in-up-delay-2">
                       <div className="text-4xl mb-4">💑</div>
                       <h3 className="text-xl font-bold text-gold mb-4">二人が出会うべき時期</h3>
                       <p className="text-gray-300 leading-relaxed text-sm tracking-wide">
@@ -482,7 +516,7 @@ export default function Home() {
                     </div>
 
                     {/* 幸運の場所 */}
-                    <div className="bg-darkNavy/60 rounded-xl p-6 md:p-8 border border-gold/30 hover:border-gold/50 transition-all duration-300">
+                    <div className="bg-darkNavy/60 rounded-xl p-6 md:p-8 border border-gold/30 hover:border-gold/50 transition-all duration-300 animate-fade-in-up">
                       <div className="text-4xl mb-4">📍</div>
                       <h3 className="text-xl font-bold text-gold mb-4">幸運の場所</h3>
                       <p className="text-gray-300 leading-relaxed text-sm tracking-wide">
@@ -491,7 +525,7 @@ export default function Home() {
                     </div>
 
                     {/* ラッキーアイテム */}
-                    <div className="bg-darkNavy/60 rounded-xl p-6 md:p-8 border border-gold/30 hover:border-gold/50 transition-all duration-300 lg:col-span-1">
+                    <div className="bg-darkNavy/60 rounded-xl p-6 md:p-8 border border-gold/30 hover:border-gold/50 transition-all duration-300 lg:col-span-1 animate-fade-in-up-delay-1">
                       <div className="text-4xl mb-4">🎁</div>
                       <h3 className="text-xl font-bold text-gold mb-4">あなたを導くラッキーアイテム</h3>
                       <p className="text-gray-300 leading-relaxed text-sm tracking-wide">
@@ -504,7 +538,7 @@ export default function Home() {
 
               {/* 月のメッセージ */}
               {fortuneDetails && (
-                <div className="space-y-6">
+                <div className="space-y-6 animate-fade-in-up-delay-2">
                   <div className="flex items-center justify-center mb-6">
                     <div className="h-px bg-gradient-to-r from-transparent via-gold to-transparent flex-1"></div>
                     <h2 className="text-2xl md:text-3xl font-bold mx-4 text-gold flex items-center">
@@ -524,9 +558,80 @@ export default function Home() {
                 </div>
               )}
 
+              {/* さらに深い宿縁を知るボタン（月額プラン） */}
+              {userTenkan && (
+                <div className="text-center animate-fade-in-up-delay-3">
+                  <div className="bg-gradient-to-br from-gold/30 via-gold/20 to-gold/10 rounded-2xl p-8 border-2 border-gold/50 shadow-gold-lg relative overflow-hidden">
+                    <div className="absolute inset-0 animate-shimmer opacity-30"></div>
+                    <div className="relative z-10 space-y-4">
+                      <h3 className="text-2xl md:text-3xl font-bold text-gold mb-2">
+                        💎 さらに深い宿縁を知る
+                      </h3>
+                      <p className="text-gray-200 text-lg mb-6">
+                        月額<span className="text-gold font-bold text-2xl mx-2">5,000円</span>で
+                        <br />
+                        詳細な鑑定と特別コンテンツをお届け
+                      </p>
+                      <button
+                        onClick={async () => {
+                          setIsProcessingMonthlyCheckout(true);
+                          try {
+                            const response = await fetch('/api/checkout', {
+                              method: 'POST',
+                              headers: {
+                                'Content-Type': 'application/json',
+                              },
+                              body: JSON.stringify({
+                                priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_MONTHLY ?? 'price_xxxxx',
+                                planType: 'subscription',
+                              }),
+                            });
+
+                            const data = await response.json();
+                            if (data.error) {
+                              throw new Error(data.error);
+                            }
+                            if (data.url) {
+                              window.location.href = data.url;
+                            } else {
+                              throw new Error('Checkout URL not found');
+                            }
+                          } catch (error: any) {
+                            console.error('Checkout error:', error);
+                            alert('決済処理中にエラーが発生しました。もう一度お試しください。');
+                            setIsProcessingMonthlyCheckout(false);
+                          }
+                        }}
+                        disabled={isProcessingMonthlyCheckout}
+                        className="w-full bg-gradient-gold text-darkNavy font-bold py-6 px-10 rounded-xl hover:shadow-gold-lg transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-xl relative overflow-hidden group"
+                      >
+                        <span className="relative z-10 flex items-center justify-center">
+                          {isProcessingMonthlyCheckout ? (
+                            <>
+                              <div className="w-5 h-5 border-2 border-darkNavy border-t-transparent rounded-full animate-spin mr-3"></div>
+                              <span>決済画面へ移動中...</span>
+                            </>
+                          ) : (
+                            <>
+                              <span className="mr-3 text-2xl">✨</span>
+                              <span>さらに深い宿縁を知る（月額5,000円）</span>
+                              <span className="ml-3 text-sm">→</span>
+                            </>
+                          )}
+                        </span>
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+                      </button>
+                      <p className="text-xs text-gray-400 mt-3">
+                        ※ いつでもキャンセル可能です
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {/* 戦略B：SNS拡散（X/Twitterシェア） */}
               {userTenkan && compatibleTenkan && (
-                <div className="text-center">
+                <div className="text-center animate-fade-in-up-delay-1">
                   <button
                     onClick={() => {
                       const shareText = `Soleil et Luneで導き出された私の運命の相手は『${TENKAN_NAMES[compatibleTenkan]}タイプ』でした。 #SoleilEtLune #運命の鑑定`;
@@ -542,7 +647,7 @@ export default function Home() {
               )}
 
               {/* さらに深く占うボタン */}
-              <div className="text-center">
+              <div className="text-center animate-fade-in-up-delay-2">
                 <button
                   onClick={() => {
                     setShowPremiumModal(true);
@@ -561,7 +666,7 @@ export default function Home() {
 
               {/* 戦略A：メール登録フォーム */}
               {userTenkan && !emailSubmitted && (
-                <div className="bg-gradient-to-br from-gold/10 via-gold/5 to-transparent rounded-2xl p-8 border-2 border-gold/30">
+                <div className="bg-gradient-to-br from-gold/10 via-gold/5 to-transparent rounded-2xl p-8 border-2 border-gold/30 animate-fade-in-up-delay-2">
                   <h3 className="text-2xl font-bold text-gold mb-4 text-center">
                     📧 この詳細な鑑定書をメールで受け取る（無料）
                   </h3>
@@ -605,7 +710,7 @@ export default function Home() {
 
               {/* プロフィールカード */}
               {filteredProfiles.length > 0 && (
-                <div className="space-y-6">
+                <div className="space-y-6 animate-fade-in-up-delay-3">
                   <div className="flex items-center justify-center mb-6">
                     <div className="h-px bg-gradient-to-r from-transparent via-gold to-transparent flex-1"></div>
                     <h2 className="text-2xl md:text-3xl font-bold mx-4 text-gold">
@@ -615,10 +720,12 @@ export default function Home() {
                   </div>
                   
                   <div className="grid md:grid-cols-3 gap-6">
-                    {filteredProfiles.map((profile) => (
+                    {filteredProfiles.map((profile, index) => (
                     <div
                       key={profile.id}
-                      className="bg-darkNavy/80 rounded-xl p-6 border-2 border-gold/30 hover:border-gold/60 transition-all duration-300 hover:shadow-gold transform hover:scale-105 relative overflow-hidden"
+                      className={`bg-darkNavy/80 rounded-xl p-6 border-2 border-gold/30 hover:border-gold/60 transition-all duration-300 hover:shadow-gold transform hover:scale-105 relative overflow-hidden ${
+                        index === 0 ? 'animate-fade-in-up' : index === 1 ? 'animate-fade-in-up-delay-1' : 'animate-fade-in-up-delay-2'
+                      }`}
                     >
                       {/* 相性バッジ */}
                       <div className="absolute top-4 right-4 bg-gradient-gold text-darkNavy text-xs font-bold px-3 py-1 rounded-full shadow-lg">
@@ -814,7 +921,7 @@ export default function Home() {
         )}
 
         {/* フッター */}
-        <footer className="text-center mt-16 text-gray-400 text-sm animate-fade-in space-y-4">
+        <footer className="text-center mt-16 text-gray-400 text-sm animate-fade-in-up-delay-3 space-y-4">
           <div className="flex items-center justify-center space-x-2">
             <span className="text-gold/60">監修：</span>
             <span className="text-gold font-semibold">東洋占星術研究機構</span>

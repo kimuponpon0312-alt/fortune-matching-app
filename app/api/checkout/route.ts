@@ -21,6 +21,11 @@ export async function POST(request: NextRequest) {
       apiVersion: '2023-10-16',
     });
 
+    // オリジンを取得
+    const origin = request.headers.get('origin') || request.headers.get('host') 
+      ? `https://${request.headers.get('host')}` 
+      : 'http://localhost:3000';
+
     // チェックアウトセッションを作成
     const session = await stripeClient.checkout.sessions.create({
       payment_method_types: ['card'],
@@ -31,11 +36,12 @@ export async function POST(request: NextRequest) {
         },
       ],
       mode: planType === 'subscription' ? 'subscription' : 'payment',
-      success_url: `${request.headers.get('origin') || 'http://localhost:3000'}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${request.headers.get('origin') || 'http://localhost:3000'}/cancel`,
+      success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${origin}/cancel`,
       metadata: {
         planType: planType,
       },
+      customer_email: body.email || undefined, // オプション：メールアドレスがあれば設定
     });
 
     return NextResponse.json({ sessionId: session.id, url: session.url });
