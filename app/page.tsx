@@ -116,6 +116,11 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isAnalyzing, setIsAnalyzing] = useState<boolean>(false);
   const [dailyCount, setDailyCount] = useState<number>(1248);
+  // 戦略A：メール登録
+  const [email, setEmail] = useState<string>("");
+  const [emailSubmitted, setEmailSubmitted] = useState<boolean>(false);
+  // 戦略C：モーダル
+  const [showPremiumModal, setShowPremiumModal] = useState<boolean>(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -518,11 +523,28 @@ export default function Home() {
                 </div>
               )}
 
+              {/* 戦略B：SNS拡散（X/Twitterシェア） */}
+              {userTenkan && compatibleTenkan && (
+                <div className="text-center">
+                  <button
+                    onClick={() => {
+                      const shareText = `Soleil et Luneで導き出された私の運命の相手は『${TENKAN_NAMES[compatibleTenkan]}タイプ』でした。 #SoleilEtLune #運命の鑑定`;
+                      const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`;
+                      window.open(shareUrl, "_blank");
+                    }}
+                    className="w-full bg-navy/80 border-2 border-gold/50 text-gold font-bold py-4 px-8 rounded-xl hover:bg-gold/10 hover:border-gold hover:shadow-gold transition-all duration-300 text-lg flex items-center justify-center"
+                  >
+                    <span className="mr-2">🐦</span>
+                    X（旧Twitter）で結果をシェアする
+                  </button>
+                </div>
+              )}
+
               {/* さらに深く占うボタン */}
               <div className="text-center">
                 <button
                   onClick={() => {
-                    alert("有料版では、より詳細な四柱推命の分析、月間運勢、年間運勢、相性の詳細分析などがご利用いただけます。");
+                    setShowPremiumModal(true);
                   }}
                   className="w-full bg-gradient-gold text-darkNavy font-bold py-5 px-8 rounded-xl hover:shadow-gold-lg transition-all duration-300 transform hover:scale-105 text-lg relative overflow-hidden group"
                 >
@@ -535,6 +557,50 @@ export default function Home() {
                 </button>
                 <p className="text-xs text-gray-400 mt-2">※ 有料版ではより詳細な分析が可能です</p>
               </div>
+
+              {/* 戦略A：メール登録フォーム */}
+              {userTenkan && !emailSubmitted && (
+                <div className="bg-gradient-to-br from-gold/10 via-gold/5 to-transparent rounded-2xl p-8 border-2 border-gold/30">
+                  <h3 className="text-2xl font-bold text-gold mb-4 text-center">
+                    📧 この詳細な鑑定書をメールで受け取る（無料）
+                  </h3>
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      if (email) {
+                        setEmailSubmitted(true);
+                        // 実際のメール送信処理はここに実装
+                      }
+                    }}
+                    className="space-y-4"
+                  >
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="メールアドレスを入力してください"
+                      className="w-full px-5 py-4 bg-darkNavy/80 border-2 border-gold/30 rounded-xl focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 text-white placeholder-gray-500 transition-all duration-300"
+                      required
+                    />
+                    <button
+                      type="submit"
+                      className="w-full bg-gradient-gold text-darkNavy font-bold py-4 px-8 rounded-xl hover:shadow-gold transition-all duration-300 transform hover:scale-105"
+                    >
+                      送信する
+                    </button>
+                  </form>
+                </div>
+              )}
+
+              {/* メール送信成功メッセージ */}
+              {emailSubmitted && (
+                <div className="bg-gradient-to-br from-gold/20 via-gold/10 to-transparent rounded-2xl p-6 border-2 border-gold/40 text-center">
+                  <div className="text-4xl mb-3">✅</div>
+                  <p className="text-lg text-gold font-semibold">
+                    メールを送信しました。後ほどご確認ください。
+                  </p>
+                </div>
+              )}
 
               {/* プロフィールカード */}
               {filteredProfiles.length > 0 && (
@@ -603,6 +669,8 @@ export default function Home() {
                   setUserGender("");
                   setLookingFor("");
                   setError("");
+                  setEmail("");
+                  setEmailSubmitted(false);
                 }}
                 className="w-full bg-navy/80 border-2 border-gold text-gold font-bold py-4 px-8 rounded-xl hover:bg-gold/10 hover:shadow-gold transition-all duration-300 text-lg"
               >
@@ -614,6 +682,67 @@ export default function Home() {
             </div>
           )}
         </div>
+
+        {/* 戦略C：プレミアム会員モーダル */}
+        {showPremiumModal && (
+          <div
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in"
+            onClick={() => setShowPremiumModal(false)}
+          >
+            <div
+              className="bg-navy/95 backdrop-blur-md rounded-3xl p-8 md:p-12 max-w-2xl w-full border-2 border-gold shadow-gold-lg relative animate-modal-fade-in"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* 閉じるボタン */}
+              <button
+                onClick={() => setShowPremiumModal(false)}
+                className="absolute top-4 right-4 text-gold hover:text-lightGold transition-colors text-2xl"
+              >
+                ×
+              </button>
+
+              <div className="text-center space-y-6">
+                <div className="text-6xl mb-4">✨</div>
+                <h2 className="text-3xl md:text-4xl font-bold text-gradient-gold mb-4">
+                  Soleil et Lune プレミアム会員
+                </h2>
+                <h3 className="text-xl md:text-2xl text-gold font-semibold mb-6">
+                  先行受付中
+                </h3>
+
+                <div className="bg-gradient-to-br from-gold/20 via-gold/10 to-transparent rounded-xl p-6 border border-gold/30 mb-6">
+                  <p className="text-lg text-gray-200 leading-relaxed mb-4">
+                    通常<span className="text-gold font-bold text-2xl mx-2">5,000円</span>が
+                  </p>
+                  <p className="text-2xl md:text-3xl text-gold font-bold mb-4">
+                    今だけ特別価格
+                  </p>
+                  <p className="text-gray-300 leading-relaxed">
+                    正式リリース時に優先案内を受け取ることができます
+                  </p>
+                </div>
+
+                <div className="space-y-4">
+                  <button
+                    onClick={() => {
+                      alert("プレミアム会員への登録が完了しました（実装予定）");
+                      setShowPremiumModal(false);
+                    }}
+                    className="w-full bg-gradient-gold text-darkNavy font-bold py-5 px-8 rounded-xl hover:shadow-gold-lg transition-all duration-300 transform hover:scale-105 text-lg"
+                  >
+                    先行予約に登録する
+                  </button>
+                  <button
+                    onClick={() => setShowPremiumModal(false)}
+                    className="w-full bg-navy/80 border-2 border-gold/50 text-gold font-semibold py-3 px-6 rounded-xl hover:bg-gold/10 transition-all duration-300"
+                  >
+                    後で考える
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* フッター */}
         <footer className="text-center mt-16 text-gray-400 text-sm animate-fade-in space-y-3">
