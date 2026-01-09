@@ -221,7 +221,7 @@ export default function Home() {
           onClick={() => onChange(option)}
           className={`flex-1 py-3 px-4 rounded-lg font-semibold text-sm md:text-base transition-all duration-300 ${
             value === option
-              ? "btn-gold text-gold-button shadow-gold transform scale-105"
+              ? "btn-gold text-gold-button text-black shadow-gold transform scale-105"
               : "text-gray-300 hover:text-gold hover:bg-gold/10"
           }`}
         >
@@ -295,44 +295,7 @@ export default function Home() {
               {/* 魔法陣/星座の輪 */}
               <div className="relative z-10 mb-12">
                 <div className="relative w-64 h-64 mx-auto animate-crystal-glow">
-                  {/* SVG魔法陣 */}
-                  <svg className="absolute inset-0 w-full h-full animate-magic-circle" viewBox="0 0 200 200">
-                    {/* 外側の魔法陣 */}
-                    <circle cx="100" cy="100" r="90" fill="none" stroke="rgba(212, 175, 55, 0.3)" strokeWidth="2" />
-                    <circle cx="100" cy="100" r="80" fill="none" stroke="rgba(212, 175, 55, 0.4)" strokeWidth="1.5" />
-                    
-                    {/* 六芒星 */}
-                    <path
-                      d="M 100 20 L 120 80 L 180 80 L 130 120 L 150 180 L 100 140 L 50 180 L 70 120 L 20 80 L 80 80 Z"
-                      fill="none"
-                      stroke="rgba(212, 175, 55, 0.5)"
-                      strokeWidth="2"
-                    />
-                    
-                    {/* 内側の星座の輪 */}
-                    <circle cx="100" cy="100" r="50" fill="none" stroke="rgba(212, 175, 55, 0.6)" strokeWidth="1" strokeDasharray="5,5" />
-                    <circle cx="100" cy="100" r="40" fill="none" stroke="rgba(212, 175, 55, 0.4)" strokeWidth="1" />
-                    
-                    {/* 中心の星 */}
-                    <polygon
-                      points="100,60 105,75 120,75 108,85 113,100 100,90 87,100 92,85 80,75 95,75"
-                      fill="rgba(212, 175, 55, 0.8)"
-                    />
-                    
-                    {/* 回転する装飾 */}
-                    <g transform="rotate(0 100 100)">
-                      <line x1="100" y1="20" x2="100" y2="30" stroke="rgba(212, 175, 55, 0.6)" strokeWidth="2" />
-                      <line x1="100" y1="170" x2="100" y2="180" stroke="rgba(212, 175, 55, 0.6)" strokeWidth="2" />
-                      <line x1="20" y1="100" x2="30" y2="100" stroke="rgba(212, 175, 55, 0.6)" strokeWidth="2" />
-                      <line x1="170" y1="100" x2="180" y2="100" stroke="rgba(212, 175, 55, 0.6)" strokeWidth="2" />
-                    </g>
-                  </svg>
-                  
-                  {/* 逆回転する内側の魔法陣 */}
-                  <svg className="absolute inset-0 w-full h-full" style={{ animation: 'magicCircleRotate 15s linear infinite reverse' }} viewBox="0 0 200 200">
-                    <circle cx="100" cy="100" r="60" fill="none" stroke="rgba(212, 175, 55, 0.3)" strokeWidth="1" strokeDasharray="3,3" />
-                    <circle cx="100" cy="100" r="30" fill="none" stroke="rgba(212, 175, 55, 0.4)" strokeWidth="1" />
-                  </svg>
+                  {/* SVG魔法陣 - 金の線を描画する要素をすべて削除 */}
                   
                   {/* 中心の光 */}
                   <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-gold rounded-full shadow-gold-lg animate-pulse"></div>
@@ -479,7 +442,7 @@ export default function Home() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full btn-gold text-gold-button py-5 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-lg relative overflow-hidden animate-fade-in-up-delay-3 ripple-effect z-10"
+                className="w-full btn-gold text-gold-button text-black py-5 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-lg relative overflow-hidden animate-fade-in-up-delay-3 ripple-effect z-10"
               >
                 {isLoading ? (
                   <span className="flex items-center justify-center">
@@ -726,7 +689,7 @@ export default function Home() {
                           }
                         }}
                         disabled={isProcessingMonthlyCheckout}
-                        className="w-full btn-gold text-gold-button py-6 px-10 rounded-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-xl relative overflow-hidden group animate-shimmer-continuous ripple-effect"
+                        className="w-full btn-gold text-gold-button text-black py-6 px-10 rounded-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-xl relative overflow-hidden group animate-shimmer-continuous ripple-effect"
                       >
                         <span className="relative z-10 flex items-center justify-center">
                           {isProcessingMonthlyCheckout ? (
@@ -775,7 +738,7 @@ export default function Home() {
                   onClick={() => {
                     setShowPremiumModal(true);
                   }}
-                  className="w-full btn-gold text-gold-button py-5 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 text-lg relative overflow-hidden group animate-shimmer-continuous ripple-effect"
+                  className="w-full btn-gold text-gold-button text-black py-5 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 text-lg relative overflow-hidden group animate-shimmer-continuous ripple-effect"
                 >
                   <span className="relative z-10 flex items-center justify-center">
                     <span className="mr-2">✨</span>
@@ -813,7 +776,7 @@ export default function Home() {
                     />
                     <button
                       type="submit"
-                      className="w-full btn-gold text-gold-button py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 ripple-effect"
+                      className="w-full btn-gold text-gold-button text-black py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 ripple-effect"
                     >
                       送信する
                     </button>
@@ -852,7 +815,7 @@ export default function Home() {
                       style={{ animationDelay: `${0.7 + index * 0.1}s` }}
                     >
                       {/* 相性バッジ */}
-                      <div className="absolute top-4 right-4 btn-gold text-gold-button text-xs px-3 py-1 rounded-full shadow-lg">
+                      <div className="absolute top-4 right-4 btn-gold text-gold-button text-black text-xs px-3 py-1 rounded-full shadow-lg">
                         相性{profile.compatibility}%
                       </div>
                       
@@ -990,7 +953,7 @@ export default function Home() {
                         }
                       }}
                       disabled={isProcessingCheckout}
-                      className="w-full btn-gold text-gold-button py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full btn-gold text-gold-button text-black py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {isProcessingCheckout ? '処理中...' : '月額プランを選択'}
                     </button>
@@ -1028,7 +991,7 @@ export default function Home() {
                         }
                       }}
                       disabled={isProcessingCheckout}
-                      className="w-full btn-gold text-gold-button py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full btn-gold text-gold-button text-black py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {isProcessingCheckout ? '処理中...' : '特別鑑定を選択'}
                     </button>

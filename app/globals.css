@@ -43,18 +43,27 @@ body {
     box-shadow: 0 20px 60px rgba(212, 175, 55, 0.4);
   }
   
-  /* ゴールドボタンのテキスト色（絶対的な黒） */
+  /* ゴールドボタンのテキスト色（絶対的な黒 - 強制） */
   .text-gold-button {
-    color: #030712 !important;
+    color: #000000 !important;
     font-weight: 700 !important;
     text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
     letter-spacing: 0.02em;
   }
   
+  /* すべてのゴールドボタン内のテキストを強制的に黒に */
+  .btn-gold,
+  .btn-gold *,
+  .btn-gold span,
+  .btn-gold button,
+  .text-black {
+    color: #000000 !important;
+  }
+  
   /* ゴールドボタン本体のスタイル */
   .btn-gold {
     background: linear-gradient(135deg, #d4af37 0%, #f4e4bc 100%) !important;
-    color: #030712 !important;
+    color: #000000 !important;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(212, 175, 55, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
     position: relative;
     z-index: 10;
@@ -62,10 +71,11 @@ body {
   
   .btn-gold:hover {
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5), 0 6px 16px rgba(212, 175, 55, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    color: #000000 !important;
   }
   
   .btn-gold * {
-    color: #030712 !important;
+    color: #000000 !important;
     font-weight: 700 !important;
   }
 }
@@ -423,18 +433,18 @@ body {
   animation: lightPillar 2s ease-out;
 }
 
-/* Glassmorphism - 磨りガラス効果、背景の星が透ける程度 */
+/* Glassmorphism - 磨りガラス効果、背景の星がうっすら見える程度（視認性向上） */
 .glass-morphism {
-  background: rgba(26, 31, 58, 0.35);
+  background: rgba(26, 31, 58, 0.8);
   backdrop-filter: blur(16px) saturate(150%);
   -webkit-backdrop-filter: blur(16px) saturate(150%);
   border: 0.5px solid rgba(212, 175, 55, 0.3);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 }
 
-/* セクション間の区切りはbackdrop-blurの強度で表現 */
+/* セクション間の区切りはbackdrop-blurの強度で表現（視認性向上） */
 .glass-morphism-section {
-  background: rgba(26, 31, 58, 0.45);
+  background: rgba(26, 31, 58, 0.85);
   backdrop-filter: blur(20px) saturate(170%);
   -webkit-backdrop-filter: blur(20px) saturate(170%);
   border: 0.5px solid rgba(212, 175, 55, 0.3);
