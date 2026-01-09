@@ -15,6 +15,20 @@ import {
 export type Gender = "male" | "female" | "other";
 export type LookingFor = "male" | "female" | "all";
 
+// 十干に応じたnoteのURL
+const noteUrls: Record<Tenkan, string> = {
+  '甲': 'https://note.com/mao_uranai_777/n/n687cce2940ef?sub_rt=share_pw',
+  '乙': 'https://note.com/mao_uranai_777/n/n35779474b7d9?sub_rt=share_pw',
+  '丙': 'https://note.com/mao_uranai_777/n/nd9ad10a9fc48?sub_rt=share_pw',
+  '丁': 'https://note.com/mao_uranai_777/n/n4d078df255f3?sub_rt=share_pw',
+  '戊': 'https://note.com/mao_uranai_777/n/n4ca7541bdb00?sub_rt=share_pw',
+  '己': 'https://note.com/mao_uranai_777/n/nf7da38d05697?sub_rt=share_pw',
+  '庚': 'https://note.com/mao_uranai_777/n/n7e6600e3ae8f?sub_rt=share_pw',
+  '辛': 'https://note.com/mao_uranai_777/n/n0186fcb03f29?sub_rt=share_pw',
+  '壬': 'https://note.com/mao_uranai_777/n/n54de470cadeb?sub_rt=share_pw',
+  '癸': 'https://note.com/mao_uranai_777/n/n3783f45191e8?sub_rt=share_pw',
+};
+
 // プロフィールデータの型定義
 interface Profile {
   id: number;
@@ -834,7 +848,11 @@ export default function Home() {
                       
                       <button
                         onClick={() => {
-                          alert(`${profile.name}さんの詳細プロフィールを表示します（実装予定）`);
+                          if (userTenkan && noteUrls[userTenkan]) {
+                            window.open(noteUrls[userTenkan], '_blank', 'noopener,noreferrer');
+                          } else {
+                            alert('詳細情報を取得できませんでした。');
+                          }
                         }}
                         className="w-full mt-4 bg-navy border-2 border-gold/50 text-gold font-semibold py-2 px-4 rounded-lg hover:bg-gold/10 transition-all duration-300 text-sm"
                       >
