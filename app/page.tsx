@@ -485,18 +485,7 @@ export default function Home() {
                     />
                   ))}
                   
-                  {/* 光の柱 */}
-                  {[...Array(5)].map((_, i) => (
-                    <div
-                      key={`pillar-${i}`}
-                      className="absolute bottom-0 w-1 bg-gradient-to-t from-gold/80 to-transparent animate-light-pillar"
-                      style={{
-                        left: `${20 + i * 15}%`,
-                        height: '100%',
-                        animationDelay: `${i * 0.2}s`,
-                      }}
-                    />
-                  ))}
+                  {/* 光の柱 - 削除（縦線バグの原因） */}
                 </div>
               )}
               
