@@ -662,51 +662,19 @@ export default function Home() {
                         詳細な鑑定と特別コンテンツをお届け
                       </p>
                       <button
-                        onClick={async () => {
-                          setIsProcessingMonthlyCheckout(true);
-                          try {
-                            const response = await fetch('/api/checkout', {
-                              method: 'POST',
-                              headers: {
-                                'Content-Type': 'application/json',
-                              },
-                              body: JSON.stringify({
-                                priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_MONTHLY ?? 'price_xxxxx',
-                                planType: 'subscription',
-                              }),
-                            });
-
-                            const data = await response.json();
-                            if (data.error) {
-                              throw new Error(data.error);
-                            }
-                            if (data.url) {
-                              window.location.href = data.url;
-                            } else {
-                              throw new Error('Checkout URL not found');
-                            }
-                          } catch (error: any) {
-                            console.error('Checkout error:', error);
-                            alert('決済処理中にエラーが発生しました。もう一度お試しください。');
-                            setIsProcessingMonthlyCheckout(false);
+                        onClick={() => {
+                          if (userTenkan && noteUrls[userTenkan]) {
+                            window.open(noteUrls[userTenkan], '_blank', 'noopener,noreferrer');
+                          } else {
+                            alert('詳細情報を取得できませんでした。');
                           }
                         }}
-                        disabled={isProcessingMonthlyCheckout}
-                        className="w-full btn-gold text-gold-button text-black py-6 px-10 rounded-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-xl relative overflow-hidden group animate-shimmer-continuous ripple-effect"
+                        className="w-full btn-gold text-gold-button text-black py-6 px-10 rounded-xl transition-all duration-300 transform hover:scale-105 text-xl relative overflow-hidden group animate-shimmer-continuous ripple-effect"
                       >
                         <span className="relative z-10 flex items-center justify-center">
-                          {isProcessingMonthlyCheckout ? (
-                            <>
-                              <div className="w-5 h-5 border-2 border-[#0a192f] border-t-transparent rounded-full animate-spin mr-3"></div>
-                              <span>決済画面へ移動中...</span>
-                            </>
-                          ) : (
-                            <>
-                              <span className="mr-3 text-2xl">✨</span>
-                              <span>さらに深い宿縁を知る（月額5,000円）</span>
-                              <span className="ml-3 text-sm">→</span>
-                            </>
-                          )}
+                          <span className="mr-3 text-2xl">✨</span>
+                          <span>さらに深い宿縁を知る（月額5,000円）</span>
+                          <span className="ml-3 text-sm">→</span>
                         </span>
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
                       </button>
@@ -739,7 +707,11 @@ export default function Home() {
               <div className="text-center animate-fade-in-up-delay-2">
                 <button
                   onClick={() => {
-                    setShowPremiumModal(true);
+                    if (userTenkan && noteUrls[userTenkan]) {
+                      window.open(noteUrls[userTenkan], '_blank', 'noopener,noreferrer');
+                    } else {
+                      alert('詳細情報を取得できませんでした。');
+                    }
                   }}
                   className="w-full btn-gold text-gold-button text-black py-5 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 text-lg relative overflow-hidden group animate-shimmer-continuous ripple-effect"
                 >
@@ -848,11 +820,7 @@ export default function Home() {
                       
                       <button
                         onClick={() => {
-                          if (userTenkan && noteUrls[userTenkan]) {
-                            window.open(noteUrls[userTenkan], '_blank', 'noopener,noreferrer');
-                          } else {
-                            alert('詳細情報を取得できませんでした。');
-                          }
+                          alert('この機能は近日公開予定です');
                         }}
                         className="w-full mt-4 bg-navy border-2 border-gold/50 text-gold font-semibold py-2 px-4 rounded-lg hover:bg-gold/10 transition-all duration-300 text-sm"
                       >
